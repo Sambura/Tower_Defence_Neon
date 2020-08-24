@@ -5,9 +5,25 @@ using UnityEngine;
 public class TowerPoint : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private bool isHighlighted = false;
+    private bool _highlihted = false;
 
-    // Start is called before the first frame update
+    private bool Highlighted
+    {
+        get
+        {
+            return _highlihted;
+        }
+        set
+        {
+            if (value == _highlihted) return;
+            if (value)
+                spriteRenderer.color = Color.green;
+            else
+                spriteRenderer.color = Color.white;
+            _highlihted = value;
+        }
+    }
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -17,25 +33,22 @@ public class TowerPoint : MonoBehaviour
     {
         if (Controller.Instance.IsBuilding != -1)
         {
-            spriteRenderer.color = Color.green;
-            isHighlighted = true;
+            Highlighted = true;
         }
     }
 
     private void OnMouseExit()
     {
-        if (isHighlighted)
-        {
-            spriteRenderer.color = Color.white;
-            isHighlighted = false;
-        }
+        Highlighted = false;
     }
 
     private void OnMouseUpAsButton()
     {
         if (Controller.Instance.IsBuilding != -1)
         {
+            Highlighted = false;
             Controller.Instance.BuildTower(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

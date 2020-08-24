@@ -59,7 +59,7 @@ public class HealthBar : MonoBehaviour
    public void SetHealth(float newHealth) 
     {
         slider.SetValueWithoutNotify(newHealth);
-        if (HideOnFull)
+        if (HideOnFull && graphics != null)
         {
             graphics.SetActive(newHealth != 1);
         }
