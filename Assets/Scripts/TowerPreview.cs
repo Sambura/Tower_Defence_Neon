@@ -11,6 +11,7 @@ public class TowerPreview : MonoBehaviour
     public void Init()
     {
         Tower.GetComponent<Tower>().enabled = false;
+        Tower.GetComponent<Collider2D>().enabled = false;
         circle = Instantiate(Tower.GetComponent<Tower>().circlePrefab);
         circle.GetComponent<CircleDrawer>().Radius = Tower.GetComponent<Tower>().radius;
         Tower.transform.parent = transform;

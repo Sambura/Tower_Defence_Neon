@@ -18,10 +18,14 @@ public class Tower : MonoBehaviour
     public float bulletDestructionDelay = 1;
 
     private Enemy target;
+    private GameObject circle;
 
     void Start()
     {
         StartCoroutine(Fire());
+        circle = Instantiate(circlePrefab, transform);
+        circle.GetComponent<CircleDrawer>().Radius = radius;
+        circle.SetActive(false);
     }
 
     private void Update()
@@ -69,5 +73,15 @@ public class Tower : MonoBehaviour
         if (gun != null)
         gun.transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(target.transform.position.y - transform.position.y, 
             target.transform.position.x - transform.position.x));
+    }
+
+    private void OnMouseEnter()
+    {
+        circle.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        circle.SetActive(false);
     }
 }
