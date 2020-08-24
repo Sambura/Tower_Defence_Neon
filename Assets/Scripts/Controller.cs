@@ -9,6 +9,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject[] towerPrefabs;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject healthBarPrefab;
+    [SerializeField] private GameObject towerPreviewPrefab;
 
     [Header("Scene elements")]
     [SerializeField] private Button[] towerButtons;
@@ -27,6 +28,8 @@ public class Controller : MonoBehaviour
     public float initialPeriod = 2;
     public float periodFactor = 1;
     public int lifesCount = 5;
+    public Camera mainCamera;
+    public float timeScale = 0.7f;
 
     /// <summary>
     /// List of all alive enemies
@@ -40,6 +43,7 @@ public class Controller : MonoBehaviour
     /// Index of tower that is being build now. -1 if no towers are being build
     /// </summary>
     public int IsBuilding { get; set; } = -1;
+    public TowerPreview preview;
 
     private void Awake()
     {
@@ -60,12 +64,18 @@ public class Controller : MonoBehaviour
             var image = towerButtons[IsBuilding].GetComponent<Image>();
             image.color = pressedButtonColor;
             buildPoints.SetActive(true);
+            Time.timeScale = timeScale;
+            preview = Instantiate(towerPreviewPrefab).GetComponent<TowerPreview>();
+            preview.Tower = Instantiate(towerPrefabs[IsBuilding]);
+            preview.Init();
         } else // If already building
         {
             var image = towerButtons[IsBuilding].GetComponent<Image>(); // Unhighlight previous button (we should do it anyways)
             image.color = defaultButtonColor;
             bool sameButton = towerIndex == IsBuilding; // If we pressed the same button, we should stop building, else we should change building index
             IsBuilding = -1;
+            Time.timeScale = 1;
+            Destroy(preview.gameObject);
             if (!sameButton) // If we pressed not the same button, start building
                 TowerButtonPressed(towerIndex);
             else
@@ -81,6 +91,8 @@ public class Controller : MonoBehaviour
         var image = towerButtons[IsBuilding].GetComponent<Image>();
         image.color = defaultButtonColor;
         IsBuilding = -1;
+        Time.timeScale = 1;
+        Destroy(preview.gameObject);
         buildPoints.SetActive(false);
     }
 

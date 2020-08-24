@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     public float Velocity { get; set; }
     public float Damage { get; set; }
     public Enemy Target { get; set; }
+    public float DestructionDelay { get; set; }
 
     private Vector2 destinationPoint;
 
@@ -19,9 +20,10 @@ public class Bullet : MonoBehaviour
         float time = deltaDistance / distance;
         if (time >= 1)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, DestructionDelay);
             if (Target != null)
                 Target.TakeDamage(Damage);
+            enabled = false;
         }
         else
             transform.position = Vector2.Lerp(transform.position, destinationPoint, time);
