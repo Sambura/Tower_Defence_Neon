@@ -29,11 +29,12 @@ public class CircleDrawer : MonoBehaviour
     private void RedrawCircle()
     {
         int vertexCount = Mathf.RoundToInt(Radius * vertexCountFactor);
-        lineRenderer.positionCount = vertexCount;
+        lineRenderer.positionCount = vertexCount + 1;
         for (int i = 0; i < vertexCount; i++)
         {
             float angle = -i * 2 * Mathf.PI / vertexCount;
             lineRenderer.SetPosition(i, new Vector3(Radius * Mathf.Cos(angle), Radius * Mathf.Sin(angle)));
         }
+        lineRenderer.SetPosition(vertexCount, lineRenderer.GetPosition(0));
     }
 }
