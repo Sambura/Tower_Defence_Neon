@@ -96,6 +96,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: 2.5
   maxHealth: 100
-  rotationTime: 0.5
+  rotationTime: 0.2
   healthBarOffset: {x: 0, y: -0.4, z: 0}
   cost: 20

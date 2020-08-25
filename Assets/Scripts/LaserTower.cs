@@ -7,7 +7,7 @@ public class LaserTower : MonoBehaviour
     /// <summary>
     /// GameObject of point that the tower standing on (needed in case of tower deletion)
     /// </summary>
-    [HideInInspector] public GameObject buildPoint;
+    [HideInInspector] public TowerPoint buildPoint;
     public Animator animator;
     public GameObject gun;
     public GameObject circlePrefab;
@@ -17,6 +17,8 @@ public class LaserTower : MonoBehaviour
     public float damage = 25;
     public float fireRate = 3;
     public int cost = 150;
+    public float buildTime = 4;
+    public Vector3 buildBarOffset = new Vector3(0, -0.5f);
 
     private bool _popUpMenu = false;
     public static LaserTower SelectedTower { get; set; }

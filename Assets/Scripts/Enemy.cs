@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
         healthBar.HideOnFull = true;
         healthBar.AutoSelfDestruction = true;
         healthBar.PositionOffset = healthBarOffset;
-        healthBar.SetHealth(1);
+        healthBar.SetValue(1);
     }
 
     void Update()
@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour
     {
         if (health <= 0) return;
         health = Mathf.Clamp(health - damage, 0, maxHealth);
-        healthBar.SetHealth(health / maxHealth);
+        healthBar.SetValue(health / maxHealth);
         if (health <= 0)
         {
             Destroy(gameObject);
