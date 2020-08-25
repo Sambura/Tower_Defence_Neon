@@ -9,9 +9,9 @@ public class TowerPreview : MonoBehaviour
 
     public void Init()
     {
-        Tower.GetComponent<Tower>().enabled = false;
+        Tower.GetComponent<LaserTower>().enabled = false;
         Tower.GetComponent<Collider2D>().enabled = false;
-        Circle.GetComponent<CircleDrawer>().Radius = Tower.GetComponent<Tower>().radius;
+        Circle.GetComponent<CircleDrawer>().Radius = Tower.GetComponent<LaserTower>().radius;
         Tower.transform.parent = transform;
         Circle.transform.parent = transform;
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7036809715147542867}
   - component: {fileID: 2651819435215860650}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: CircleEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bc3f1ae7cd0fe5e4c820ea5e39f5917d, type: 2}
+  - {fileID: 2100000, guid: cd581ac18c4f35747b35350964cf2e41, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 49a199685630c414f896f5b98cc96bbf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4a1840016d78a2045ae3e0cf8437fe76, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,7 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db6036b8bef31344b5e4b6436c804ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 2.5
-  maxHealth: 150
+  velocity: 1
+  maxHealth: 900
   rotationTime: 0.5
   healthBarOffset: {x: 0, y: -0.4, z: 0}
+  cost: 230
