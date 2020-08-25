@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private GameObject towerPreviewPrefab;
+    [SerializeField] private GameObject circlePrefab;
 
     [Header("Scene elements")]
     [SerializeField] private Button[] towerButtons;
@@ -18,6 +20,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private Canvas worldCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI lifesText;
     [SerializeField] private GameObject gameOverScreen;
+    public GameObject popupTowerMenu;
 
     [Header("Controller settings")]
     [SerializeField] private Color defaultButtonColor;
@@ -67,6 +70,7 @@ public class Controller : MonoBehaviour
             Time.timeScale = timeScale;
             preview = Instantiate(towerPreviewPrefab).GetComponent<TowerPreview>();
             preview.Tower = Instantiate(towerPrefabs[IsBuilding]);
+            preview.Circle = Instantiate(circlePrefab);
             preview.Init();
         } else // If already building
         {
@@ -85,9 +89,8 @@ public class Controller : MonoBehaviour
 
     public void BuildTower(GameObject point)
     {
-        point.SetActive(false);
         var tower = Instantiate(towerPrefabs[IsBuilding], point.transform.position, Quaternion.identity);
-        tower.GetComponent<Tower>().point = point;
+        tower.GetComponent<Tower>().buildPoint = point;
         var image = towerButtons[IsBuilding].GetComponent<Image>();
         image.color = defaultButtonColor;
         IsBuilding = -1;
@@ -105,6 +108,7 @@ public class Controller : MonoBehaviour
         buildPoints.SetActive(false); // Hiding all building points
         enemyRoute.enabled = false; // Hide route line
         lifesText.text = $"Lifes left: {lifesCount}"; // Display lifes text
+        popupTowerMenu.SetActive(false); // Hide popup menu
         StartCoroutine(Spawner(initialPeriod, periodFactor));
     }
 
@@ -156,5 +160,22 @@ public class Controller : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         Time.timeScale = 0;
+    }
+
+    public void RemoveTower()
+    {
+        Destroy(Tower.SelectedTower.gameObject);
+        Tower.SelectedTower.buildPoint.SetActive(true);
+        Tower.SelectedTower.PopUpMenu = false;
+    }
+
+    public void UpgradeTower()
+    {
+        var point = Tower.SelectedTower.buildPoint;
+        var newTower = Tower.SelectedTower.upgrade;
+        Destroy(Tower.SelectedTower.gameObject);
+        Tower.SelectedTower.PopUpMenu = false;
+        var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
+        tower.GetComponent<Tower>().buildPoint = point;
     }
 }

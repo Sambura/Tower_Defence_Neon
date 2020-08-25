@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     {
         health = maxHealth;
         var direction = Route.GetPosition(nextNodeIndex) - transform.position;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90);
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
         healthBar = Controller.Instance.PlaceHealthBar();
         healthBar.FollowTarget = transform;
         healthBar.HideOnFull = true;
@@ -60,7 +60,7 @@ public class Enemy : MonoBehaviour
                 } else
                 {
                     var direction = Route.GetPosition(nextNodeIndex) - transform.position;
-                    StartCoroutine(Rotate(Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90), rotationTime));
+                    StartCoroutine(Rotate(Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg), rotationTime));
                 }
             }
         }
@@ -80,6 +80,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (health <= 0) return;
         health = Mathf.Clamp(health - damage, 0, maxHealth);
         healthBar.SetHealth(health / maxHealth);
         if (health <= 0)

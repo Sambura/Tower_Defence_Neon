@@ -5,17 +5,15 @@ using UnityEngine;
 public class TowerPreview : MonoBehaviour
 {
     public GameObject Tower { get; set; }
-
-    private GameObject circle;
+    public GameObject Circle { get; set; }
 
     public void Init()
     {
         Tower.GetComponent<Tower>().enabled = false;
         Tower.GetComponent<Collider2D>().enabled = false;
-        circle = Instantiate(Tower.GetComponent<Tower>().circlePrefab);
-        circle.GetComponent<CircleDrawer>().Radius = Tower.GetComponent<Tower>().radius;
+        Circle.GetComponent<CircleDrawer>().Radius = Tower.GetComponent<Tower>().radius;
         Tower.transform.parent = transform;
-        circle.transform.parent = transform;
+        Circle.transform.parent = transform;
     }
 
     void Update()
