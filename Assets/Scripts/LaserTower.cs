@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public class LaserTower : MonoBehaviour
 {
     /// <summary>
     /// GameObject of point that the tower standing on (needed in case of tower deletion)
     /// </summary>
     [HideInInspector] public GameObject buildPoint;
     public Animator animator;
-    public GameObject bullet;
     public GameObject gun;
     public GameObject circlePrefab;
     public GameObject upgrade;
-    public GameObject fx;
+    public GameObject[] lasers;
     public float radius = 2;
     public float damage = 25;
     public float fireRate = 3;
-    public float bulletVelocity = 25;
-    public float bulletDestructionDelay = 1;
+    public int cost = 150;
 
     private bool _popUpMenu = false;
-    public static Tower SelectedTower { get; set; }
+    public static LaserTower SelectedTower { get; set; }
 
     public bool PopUpMenu
     {
@@ -34,20 +32,15 @@ public class Tower : MonoBehaviour
             _popUpMenu = value;
             if (value)
             {
-                var popup = Controller.Instance.popupTowerMenu;
                 if (SelectedTower != null)
                 {
                     SelectedTower.Deselect();
                 }
+                Controller.Instance.popupTowerMenu.ShowPopUp(true, true, upgrade != null, transform.position);
                 SelectedTower = this;
-                popup.SetActive(true);
-                popup.transform.position = transform.position;
-                var script = popup.GetComponent<TowerPopUp>();
-                script.ResetButtons();
-                if (upgrade == null) script.upgradeButton.interactable = false;
             } else
             {
-                Controller.Instance.popupTowerMenu.SetActive(false);
+                Controller.Instance.popupTowerMenu.ClosePopUp();
                 SelectedTower = null;
             }
         }
@@ -71,10 +64,13 @@ public class Tower : MonoBehaviour
             if (gun != null)
                 gun.transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(target.transform.position.y - transform.position.y,
                     target.transform.position.x - transform.position.x));
-            if (fx != null)
+            if (lasers != null)
             {
-                var sr = fx.GetComponent<SpriteRenderer>();
-                sr.size = new Vector2(Vector2.Distance(transform.position, target.transform.position) - 0.12f, sr.size.y);
+                foreach (var i in lasers)
+                {
+                    var sr = i.GetComponent<SpriteRenderer>();
+                    sr.size = new Vector2(Vector2.Distance(sr.transform.position, target.transform.position), sr.size.y);
+                }
             }
         }
     }
@@ -94,17 +90,34 @@ public class Tower : MonoBehaviour
             else
             {
                 target = null;
+                float lastProgress = 0;
                 foreach (var i in Controller.Instance.SpawnedEnemies)
                 {
                     if (Vector2.Distance(transform.position, i.transform.position) <= radius)
                     {
-                        target = i;
-                        if (animator != null)
+                        if (target == null || lastProgress < i.RouteProgress)
                         {
-                            animator.SetTrigger("Fire");
+                            target = i;
+                            lastProgress = i.RouteProgress;
                         }
-                        else FireBullet();
-                        break;
+                    }
+                }
+                if (target != null)
+                {
+                    if (lasers != null)
+                    {
+                        foreach (var i in lasers)
+                        {
+                            var sr = i.GetComponent<SpriteRenderer>();
+                            sr.size = new Vector2(Vector2.Distance(sr.transform.position, target.transform.position), sr.size.y);
+                        }
+                    }
+                    if (gun != null)
+                        gun.transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(target.transform.position.y - transform.position.y,
+                            target.transform.position.x - transform.position.x));
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Fire");
                     }
                 }
             }
@@ -115,20 +128,7 @@ public class Tower : MonoBehaviour
     public void FireBullet()
     {
         if (target == null) return;
-        if (bullet != null)
-        {
-            var newBullet = Instantiate(bullet, transform.position, Quaternion.identity).GetComponent<Bullet>();
-            newBullet.Target = target;
-            newBullet.Damage = damage;
-            newBullet.Velocity = bulletVelocity;
-            newBullet.DestructionDelay = bulletDestructionDelay;
-        } else
-        {
-            target.TakeDamage(damage);
-        }
-        if (gun != null)
-        gun.transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(target.transform.position.y - transform.position.y, 
-            target.transform.position.x - transform.position.x));
+        target.TakeDamage(damage);
     }
 
     private void OnMouseEnter()

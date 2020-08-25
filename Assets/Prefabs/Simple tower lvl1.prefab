@@ -125,17 +125,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildPoint: {fileID: 0}
   animator: {fileID: 4912450057554701171}
-  bullet: {fileID: 0}
   gun: {fileID: 4979671540579378496}
   circlePrefab: {fileID: 9044926532029320617, guid: 6502cf0ec2d7f6d44b4d9b638cdb182a,
     type: 3}
-  upgrade: {fileID: 1240431536469242377, guid: 5f76ee3b81c1528479f792e522c7caa5, type: 3}
-  fx: {fileID: 6233640115193635259}
+  upgrade: {fileID: 1240431536469242377, guid: 07b87c5ed0b74da43957a41a09df39ec, type: 3}
+  lasers:
+  - {fileID: 6233640115193635259}
   radius: 3
   damage: 25
   fireRate: 3
-  bulletVelocity: 20
-  bulletDestructionDelay: 0.3
 --- !u!95 &4912450057554701171
 Animator:
   serializedVersion: 3
