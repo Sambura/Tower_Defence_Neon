@@ -10,21 +10,38 @@ public class TowerPopUp : MonoBehaviour
     [SerializeField] private Button[] upgradeButton;
     [SerializeField] private GameObject UpMenu;
     [SerializeField] private GameObject DownMenu;
+    [SerializeField] private TMPro.TextMeshProUGUI[] costTexts;
+    [SerializeField] private string costFiller = "—";
 
-    public void ShowPopUp(bool removeB, bool infoB, bool upgradeB, Vector2 position)
+    public void ShowPopUp(Vector2 position, int upgradeCost)
     {
         transform.position = position;
         if (transform.position.y < 0)
         {
-            removeButton[0].interactable = removeB;
-            infoButton[0].interactable = infoB;
-            upgradeButton[0].interactable = upgradeB;
+            if (upgradeCost == -1)
+            {
+                costTexts[0].text = costFiller;
+                upgradeButton[0].interactable = false;
+            } else
+            {
+                costTexts[0].text = upgradeCost.ToString();
+                upgradeButton[0].interactable = true;
+            }
+
             UpMenu.SetActive(true);
         } else
         {
-            removeButton[1].interactable = removeB;
-            infoButton[1].interactable = infoB;
-            upgradeButton[1].interactable = upgradeB;
+            if (upgradeCost == -1)
+            {
+                costTexts[1].text = costFiller;
+                upgradeButton[1].interactable = false;
+            }
+            else
+            {
+                costTexts[1].text = upgradeCost.ToString();
+                upgradeButton[1].interactable = true;
+            }
+
             DownMenu.SetActive(true);
         }
     }

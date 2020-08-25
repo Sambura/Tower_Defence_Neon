@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LaserMat
+  m_Name: EmptyTowerMat [white]
   m_Shader: {fileID: -6465566751694194690, guid: 7273b7b1d161d7c4fb95f5d28ed8aaf1,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
@@ -26,4 +26,4 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats: []
     m_Colors:
-    - Color_5955DFCC: {r: 2.4402115, g: 4.880423, b: 8.47419, a: 1}
+    - Color_5955DFCC: {r: 2.6701567, g: 2.6701567, b: 2.6701567, a: 1}

@@ -136,7 +136,7 @@ MonoBehaviour:
   radius: 15
   damage: 1000
   fireRate: 9
-  cost: 10000
+  cost: 80000
 --- !u!95 &8194981942464649864
 Animator:
   serializedVersion: 3
