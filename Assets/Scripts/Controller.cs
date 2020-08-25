@@ -37,7 +37,20 @@ public class Controller : MonoBehaviour
     public float timeScale = 0.7f;
     public int kills = 0;
     public int initMoney = 150;
-    public int Money { get; set; }
+
+    private int _money;
+    public int Money 
+    {
+        get
+        {
+            return _money;
+        }
+        set
+        {
+            _money = value;
+            moneyText.text = $"Money: {Money}";
+        }
+    }
 
     /// <summary>
     /// List of all alive enemies
@@ -119,7 +132,7 @@ public class Controller : MonoBehaviour
         Money = initMoney; // Set money
         lifesText.text = $"Lifes left: {lifesCount}"; // Display lifes text
         killsText.text = $"Kills: {kills}"; // Display kills
-        killsText.text = $"Money: {Money}"; // Display money
+        moneyText.text = $"Money: {Money}"; // Display money
         popupTowerMenu.ClosePopUp(); // Hide popup menu
         StartCoroutine(Spawner(initialPeriod, periodFactor));
     }

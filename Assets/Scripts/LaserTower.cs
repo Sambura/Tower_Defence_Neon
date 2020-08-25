@@ -36,7 +36,7 @@ public class LaserTower : MonoBehaviour
                 {
                     SelectedTower.Deselect();
                 }
-                Controller.Instance.popupTowerMenu.ShowPopUp(true, true, upgrade != null, transform.position);
+                Controller.Instance.popupTowerMenu.ShowPopUp(transform.position, (upgrade == null) ? -1 : (upgrade.GetComponent<LaserTower>().cost));
                 SelectedTower = this;
             } else
             {
