@@ -27,9 +27,9 @@ public class Controller : MonoBehaviour
     public float minPeriod = 0.2f;
     public int lifesCount = 5;
     public Camera mainCamera;
-    public float timeScale = 0.7f;
     public int kills = 0;
     public int initMoney = 150;
+    public float removeCostRatio = 0.4f;
 
     private int _money;
     public int Money 
@@ -134,26 +134,5 @@ public class Controller : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         Time.timeScale = 0;
-    }
-
-    public void RemoveTower()
-    {
-        Destroy(LaserTower.SelectedTower.gameObject);
-        LaserTower.SelectedTower.buildPoint.gameObject.SetActive(true);
-        LaserTower.SelectedTower.PopUpMenu = false;
-    }
-
-    public void UpgradeTower()
-    {
-        var newTower = LaserTower.SelectedTower.upgrade;
-        if (Money >= newTower.GetComponent<LaserTower>().cost)
-        {
-            Money -= newTower.GetComponent<LaserTower>().cost;
-            var point = LaserTower.SelectedTower.buildPoint;
-            Destroy(LaserTower.SelectedTower.gameObject);
-            LaserTower.SelectedTower.PopUpMenu = false;
-            var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
-            tower.GetComponent<LaserTower>().buildPoint = point;
-        }
     }
 }

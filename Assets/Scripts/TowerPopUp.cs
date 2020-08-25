@@ -10,22 +10,35 @@ public class TowerPopUp : MonoBehaviour
     [SerializeField] private Button[] upgradeButton;
     [SerializeField] private GameObject UpMenu;
     [SerializeField] private GameObject DownMenu;
-    [SerializeField] private TMPro.TextMeshProUGUI[] costTexts;
+    [SerializeField] private TMPro.TextMeshProUGUI[] upgradeCostTexts;
+    [SerializeField] private TMPro.TextMeshProUGUI[] removeCostTexts;
     [SerializeField] private string costFiller = "—";
 
-    public void ShowPopUp(Vector2 position, int upgradeCost)
+    public void ShowPopUp(Vector2 position, int upgradeCost, int removeCost)
     {
         transform.position = position;
         if (transform.position.y < 0)
         {
             if (upgradeCost == -1)
             {
-                costTexts[0].text = costFiller;
+                upgradeCostTexts[0].text = costFiller;
                 upgradeButton[0].interactable = false;
-            } else
+            } 
+            else
             {
-                costTexts[0].text = upgradeCost.ToString();
+                upgradeCostTexts[0].text = upgradeCost.ToString();
                 upgradeButton[0].interactable = true;
+            }
+
+            if (removeCost == -1)
+            {
+                removeCostTexts[0].text = costFiller;
+                removeButton[0].interactable = false;
+            }
+            else
+            {
+                removeCostTexts[0].text = removeCost.ToString();
+                removeButton[0].interactable = true;
             }
 
             UpMenu.SetActive(true);
@@ -33,13 +46,24 @@ public class TowerPopUp : MonoBehaviour
         {
             if (upgradeCost == -1)
             {
-                costTexts[1].text = costFiller;
+                upgradeCostTexts[1].text = costFiller;
                 upgradeButton[1].interactable = false;
             }
             else
             {
-                costTexts[1].text = upgradeCost.ToString();
+                upgradeCostTexts[1].text = upgradeCost.ToString();
                 upgradeButton[1].interactable = true;
+            }
+
+            if (removeCost == -1)
+            {
+                removeCostTexts[1].text = costFiller;
+                removeButton[1].interactable = false;
+            }
+            else
+            {
+                removeCostTexts[1].text = removeCost.ToString();
+                removeButton[1].interactable = true;
             }
 
             DownMenu.SetActive(true);

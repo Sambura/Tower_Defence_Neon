@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SimpleTowerMat
+  m_Name: AreaTowerMat [red]
   m_Shader: {fileID: -6465566751694194690, guid: 7273b7b1d161d7c4fb95f5d28ed8aaf1,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
@@ -26,4 +26,4 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats: []
     m_Colors:
-    - Color_5955DFCC: {r: 0.7608235, g: 1.5133044, b: 2.6441739, a: 1}
+    - Color_5955DFCC: {r: 3.3303585, g: 0.9716335, b: 0.8954265, a: 1}
