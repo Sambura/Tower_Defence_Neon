@@ -93,7 +93,7 @@ public class TowerBuildController : MonoBehaviour
     {
         buttons.SetActive(false);
     }
-
+    /*
     private IEnumerator TowerBuilding(GameObject newTower, TowerPoint point)
     {
         // Tower stuff
@@ -137,6 +137,38 @@ public class TowerBuildController : MonoBehaviour
         point.gameObject.SetActive(false);
         point.SetHighlight(false);
     }
+    */
+
+    private IEnumerator TowerBuilding(GameObject newTower, TowerPoint point) // New
+    {
+        // Point stuff
+        point.gameObject.SetActive(false);
+        // Tower stuff
+        var towerScript = newTower.GetComponent<Tower>();
+        var buildTime = towerScript.buildTime;
+        var progressBarOffset = towerScript.buildBarOffset;
+        // Effect stuff
+        var effect = Instantiate(buildEffect, point.transform.position, Quaternion.identity).GetComponent<EffectController>();
+        effect.SetDuration(buildTime);
+        effect.PlayEffect();
+        // ProgressBar stuff
+        var progressBar = Controller.Instance.PlaceHealthBar();
+        progressBar.transform.position = point.transform.position + progressBarOffset;
+        progressBar.SetValue(0);
+        // Start
+        float startTime = Time.time;
+        for (float progress = 0; progress < 1;)
+        {
+            progress = Mathf.Lerp(0, 1, (Time.time - startTime) / buildTime);
+            progressBar.SetValue(progress);
+            yield return null;
+        }
+
+        var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
+        tower.GetComponent<Tower>().buildPoint = point;
+        Destroy(progressBar.gameObject);
+    }
+
 
     private IEnumerator TowerUpgrading(GameObject oldTower, GameObject newTower)
     {
