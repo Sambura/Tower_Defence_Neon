@@ -9,6 +9,15 @@ public class EffectController : MonoBehaviour
     [SerializeField] private float scalableDuration;
     [SerializeField] private float unscalableDuration;
 
+    public void SetParticleMaterial(Material newMat)
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.GetComponent<ParticleSystemRenderer>().material = newMat;
+            particleSystem.GetComponent<ParticleSystemRenderer>().trailMaterial = newMat;
+        }
+    } 
+
     public float SetDuration(float newDuration)
     {
         if (animator != null)

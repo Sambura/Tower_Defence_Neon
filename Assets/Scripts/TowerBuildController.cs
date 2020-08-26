@@ -7,6 +7,7 @@ public class TowerBuildController : MonoBehaviour
     [SerializeField] private GameObject buttons;
     [SerializeField] private GameObject buildEffect;
     [SerializeField] private GameObject upgradeEffect;
+    [SerializeField] private GameObject removeEffect;
 
     private TowerPoint _selectedPoint;
 
@@ -64,8 +65,8 @@ public class TowerBuildController : MonoBehaviour
         if (Controller.Instance.Money >= towerCost)
         {
             Controller.Instance.Money -= towerCost;
+            SelectedPoint.Selected = false; // Do not move
             StartCoroutine(TowerBuilding(towerPrefab, SelectedPoint));
-            SelectedPoint.Selected = false;
             SelectedPoint = null;
         }
     }
@@ -73,6 +74,8 @@ public class TowerBuildController : MonoBehaviour
     public void RemoveTower()
     {
         Controller.Instance.Money += Tower.SelectedTower.removeCost;
+        Instantiate(removeEffect, Tower.SelectedTower.transform.position, Quaternion.identity)
+            .GetComponent<EffectController>().SetParticleMaterial(Tower.SelectedTower.particleMaterial);
         Destroy(Tower.SelectedTower.gameObject);
         Tower.SelectedTower.buildPoint.gameObject.SetActive(true);
         Tower.SelectedTower.PopUpMenu = false;
@@ -108,6 +111,7 @@ public class TowerBuildController : MonoBehaviour
         // Effect stuff
         var effect = Instantiate(buildEffect, point.transform.position, Quaternion.identity).GetComponent<EffectController>();
         effect.GetComponent<TimedDestruction>().StartDestruction(effect.SetDuration(buildTime));
+        effect.SetParticleMaterial(towerScript.particleMaterial);
         effect.PlayEffect();
         // ProgressBar stuff
         var progressBar = Controller.Instance.PlaceHealthBar();
@@ -136,10 +140,11 @@ public class TowerBuildController : MonoBehaviour
         var oldTowerScript = oldTower.GetComponent<Tower>();
         var point = oldTowerScript.buildPoint;
         var removeCost = oldTowerScript.removeCost;
-        Destroy(oldTowerScript);
+        oldTowerScript.PrepareForUpgrade();
         // Effect stuff
         var effect = Instantiate(upgradeEffect, point.transform.position, Quaternion.identity).GetComponent<EffectController>();
         effect.GetComponent<TimedDestruction>().StartDestruction(effect.SetDuration(buildTime));
+        effect.SetParticleMaterial(oldTowerScript.particleMaterial);
         effect.PlayEffect();
         // ProgressBar stuff
         var progressBar = Controller.Instance.PlaceHealthBar();

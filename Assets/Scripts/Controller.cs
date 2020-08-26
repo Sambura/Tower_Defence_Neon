@@ -44,7 +44,7 @@ public class Controller : MonoBehaviour
         set
         {
             _money = value;
-            moneyText.text = $"Money: {Money}";
+            moneyText.text = Money.ToString();
         }
     }
 
@@ -78,9 +78,9 @@ public class Controller : MonoBehaviour
     void Start()
     {
         Money = initMoney; // Set money
-        lifesText.text = $"Lifes left: {lifesCount}"; // Display lifes text
+        lifesText.text = lifesCount.ToString(); // Display lifes text
         killsText.text = $"Kills: {kills}"; // Display kills
-        moneyText.text = $"Money: {Money}"; // Display money
+        moneyText.text = Money.ToString(); // Display money
         popupTowerMenu.ClosePopUp(); // Hide popup menu
         enemyRoute = GameObject.FindGameObjectWithTag("EnemyRoute").GetComponent<LineRenderer>(); // Find enemy route in loaded level
         enemyRoute.enabled = false; // Hide route line
@@ -121,7 +121,7 @@ public class Controller : MonoBehaviour
     {
         if (lifesCount == 0) return;
         lifesCount--;
-        lifesText.text = $"Lifes left: {lifesCount}";
+        lifesText.text = lifesCount.ToString();
         if (lifesCount == 0)
         {
             StartCoroutine(GameOver());

@@ -26,6 +26,18 @@ public class Enemy : MonoBehaviour
     private HealthBar healthBar;
     private float health;
 
+    private List<Effect> velocityChange = new List<Effect>();
+
+    public void InflictEffect(Effect effect)
+    {
+        switch (effect.effectType)
+        {
+            case Effect.EffectType.VelocityChange:
+                velocityChange.Add(effect);
+                break;
+        }
+    }
+
     private void Start()
     {
         health = maxHealth;
@@ -42,7 +54,17 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         if (nextNodeIndex == Route.positionCount) return;
-        float deltaDistance = velocity * Time.deltaTime;
+        float velocityFactor = 1;
+        for (var i = 0; i < velocityChange.Count; i++)
+        {
+            velocityFactor *= velocityChange[i].factor;
+            if (velocityChange[i].endTime <= Time.time)
+            {
+                velocityChange.RemoveAt(i);
+                i--;
+            }
+        }
+        float deltaDistance = velocity * Time.deltaTime * velocityFactor;
         while (deltaDistance > 0)
         {
             float distance = Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex));
@@ -50,7 +72,8 @@ public class Enemy : MonoBehaviour
             {
                 transform.position = Vector2.Lerp(transform.position, Route.GetPosition(nextNodeIndex), deltaDistance / distance);
                 break;
-            } else
+            }
+            else
             {
                 deltaDistance -= distance;
                 nextNodeIndex++;
@@ -62,20 +85,21 @@ public class Enemy : MonoBehaviour
                     Destroy(gameObject);
                     Controller.Instance.EnemyBreakthrough();
                     break;
-                } else
+                }
+                else
                 {
                     var direction = Route.GetPosition(nextNodeIndex) - transform.position;
                     StartCoroutine(Rotate(Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg), rotationTime));
                 }
             }
         }
-        if (Route.positionCount == nextNodeIndex) RouteProgress = 1; 
+        if (Route.positionCount == nextNodeIndex) RouteProgress = 1;
         else
-            RouteProgress = 
+            RouteProgress =
             (
             nextNodeIndex - 1 // Progress among route segments, plus...
             + Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex - 1)) // ...Progress on current segment (less then 1 / segmentsCount)
-            / 
+            /
             Vector2.Distance(Route.GetPosition(nextNodeIndex - 1), Route.GetPosition(nextNodeIndex))
             )
             / (Route.positionCount - 1); // Over segmentsCount
@@ -107,5 +131,21 @@ public class Enemy : MonoBehaviour
                 if (ListNode.List != null)
                     ListNode.List.Remove(ListNode);
         }
+    }
+}
+
+public class Effect
+{
+    public enum EffectType { VelocityChange };
+
+    public EffectType effectType;
+    public float factor;
+    public float endTime;
+
+    public Effect(EffectType effectType, float factor, float endTime)
+    {
+        this.effectType = effectType;
+        this.factor = factor;
+        this.endTime = endTime;
     }
 }

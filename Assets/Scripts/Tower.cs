@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Tower : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Tower : MonoBehaviour
     public int cost = 150;
     public float buildTime = 4;
     public Vector3 buildBarOffset = new Vector3(0, -0.5f);
+    public Material particleMaterial;
     [HideInInspector] public int removeCost = 0;
 
     private bool _popUpMenu = false;
@@ -60,16 +62,6 @@ public class Tower : MonoBehaviour
         removeCost += (int)(cost * Controller.Instance.removeCostRatio);
     }
 
-    protected virtual void Update()
-    {
-        if (target != null)
-        {
-            if (gun != null)
-                gun.transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(target.transform.position.y - transform.position.y,
-                    target.transform.position.x - transform.position.x));
-        }
-    }
-
     protected virtual void OnMouseEnter()
     {
         circle.SetActive(true);
@@ -91,4 +83,19 @@ public class Tower : MonoBehaviour
         circle.SetActive(false);
         PopUpMenu = false;
     }
+
+    public virtual void PrepareForUpgrade()
+    {
+        circle.SetActive(false);
+        Destroy(this);
+    }
+
+#if UNITY_EDITOR
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, radius);
+    }
+
+#endif
 }

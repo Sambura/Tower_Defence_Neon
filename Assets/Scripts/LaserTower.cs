@@ -7,7 +7,7 @@ public class LaserTower : Tower
     public Animator animator;
     public GameObject[] lasers;
 
-    protected override void Update()
+    protected void Update()
     {
         if (target != null)
         {
@@ -52,8 +52,11 @@ public class LaserTower : Tower
         target.TakeDamage(damage);
     }
 
-    private void OnDestroy()
+    public override void PrepareForUpgrade()
     {
+        circle.SetActive(false);
+        enabled = false;
+        GetComponent<Collider2D>().enabled = false;
         animator.SetTrigger("Stop");
     }
 }

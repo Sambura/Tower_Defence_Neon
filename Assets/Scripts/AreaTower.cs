@@ -11,7 +11,7 @@ public class AreaTower : Tower
     [SerializeField] private float damageRadius = 0.5f;
     [SerializeField] private float damageDecay = 1; // Linear decay, 0 - no decay, 1 - no damage on area edges
 
-    protected override void Update()
+    protected void Update()
     {
         if (target != null)
         {
