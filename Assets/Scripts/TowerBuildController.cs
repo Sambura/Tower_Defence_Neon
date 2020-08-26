@@ -100,6 +100,7 @@ public class TowerBuildController : MonoBehaviour
     {
         // Point stuff
         point.gameObject.SetActive(false);
+        point.SetHighlight(false);
         // Tower stuff
         var towerScript = newTower.GetComponent<Tower>();
         var buildTime = towerScript.buildTime;
@@ -125,7 +126,6 @@ public class TowerBuildController : MonoBehaviour
         tower.GetComponent<Tower>().buildPoint = point;
         Destroy(progressBar.gameObject);
     }
-
 
     private IEnumerator TowerUpgrading(GameObject oldTower, GameObject newTower)
     {

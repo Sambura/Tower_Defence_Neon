@@ -51,4 +51,9 @@ public class LaserTower : Tower
         if (target == null) return;
         target.TakeDamage(damage);
     }
+
+    private void OnDestroy()
+    {
+        animator.SetTrigger("Stop");
+    }
 }

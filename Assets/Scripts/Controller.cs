@@ -79,6 +79,10 @@ public class Controller : MonoBehaviour
         killsText.text = $"Kills: {kills}"; // Display kills
         moneyText.text = $"Money: {Money}"; // Display money
         popupTowerMenu.ClosePopUp(); // Hide popup menu
+    }
+
+    public void StartWave()
+    {
         StartCoroutine(Spawner(initialPeriod, periodFactor));
     }
 
