@@ -133,9 +133,10 @@ MonoBehaviour:
   cost: 2000
   buildTime: 8
   buildBarOffset: {x: 0, y: -0.5, z: 0}
+  removeCost: 0
   projectilePrefab: {fileID: 5506810053946469137, guid: 0e72b6563d0bda846b028e2ce884f42a,
     type: 3}
-  projectileVelocity: 5
+  projectileVelocity: 7.5
   damageRadius: 1.1
   damageDecay: 0.3
 --- !u!1 &4979671540579378496

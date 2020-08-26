@@ -1596,7 +1596,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: {fileID: 2124940783}
-  buildEffect: {fileID: 4115621815024151650, guid: 24502be8fcf03b04aac8e374ac54b232,
+  buildEffect: {fileID: 4992847569839677531, guid: 1adc6814246b48043a194ad71952232c,
+    type: 3}
+  upgradeEffect: {fileID: 6029497732028266568, guid: 13feb48ebb4f5d649a96bc07d75cb4a5,
     type: 3}
 --- !u!1 &547853028
 GameObject:

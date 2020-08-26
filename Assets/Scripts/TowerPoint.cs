@@ -6,7 +6,6 @@ public class TowerPoint : MonoBehaviour
 {
     [SerializeField] private Color normalColor;
     [SerializeField] private Color highlightedColor;
-    public Gradient buildColorChange;
 
     private bool highlighted = true;
     private bool _selected = false;

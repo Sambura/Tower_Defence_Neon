@@ -5006,6 +5006,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692c791e382026f4798a2f74e451eebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDestructionDelay: 3.1
-  maxDestructionDelay: 3.1
+  destructionDelay: 3.1
   playOnAwake: 1

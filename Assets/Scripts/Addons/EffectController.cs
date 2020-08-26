@@ -9,23 +9,25 @@ public class EffectController : MonoBehaviour
     [SerializeField] private float scalableDuration;
     [SerializeField] private float unscalableDuration;
 
-    public void SetDuration(float newDuration)
+    public float SetDuration(float newDuration)
     {
         if (animator != null)
         {
-            animator.speed = scalableDuration / newDuration;
+            animator.SetFloat("Speed", scalableDuration / newDuration);
         }
 
         if (particleSystem != null)
         {
             var mainEffector = particleSystem.main;
-            mainEffector.duration = newDuration + unscalableDuration;
+            mainEffector.duration = newDuration;
         }
+
+        return newDuration + unscalableDuration;
     }
 
     public void PlayEffect()
     {
-        if (animator != null) animator.SetTrigger("Main");
+        if (animator != null) animator.SetTrigger("Play");
         if (particleSystem != null) particleSystem.Play();
     }
 }

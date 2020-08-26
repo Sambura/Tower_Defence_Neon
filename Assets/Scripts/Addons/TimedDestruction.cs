@@ -2,13 +2,17 @@
 
 public class TimedDestruction : MonoBehaviour
 {
-    [SerializeField] float minDestructionDelay;
-    [SerializeField] float maxDestructionDelay;
+    [SerializeField] float destructionDelay;
     [SerializeField] bool playOnAwake;
 
     public void StartDestruction()
     {
-        Destroy(gameObject, Random.Range(minDestructionDelay, maxDestructionDelay));
+        Destroy(gameObject, destructionDelay);
+    }
+
+    public void StartDestruction(float delay)
+    {
+        Destroy(gameObject, delay);
     }
 
     private void Awake()

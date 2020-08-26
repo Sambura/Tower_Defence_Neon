@@ -50,6 +50,7 @@ public class Tower : MonoBehaviour
 
     protected Enemy target;
     protected GameObject circle;
+    protected float nextShot;
 
     protected virtual void Start()
     {

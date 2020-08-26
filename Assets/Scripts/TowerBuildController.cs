@@ -6,6 +6,7 @@ public class TowerBuildController : MonoBehaviour
 {
     [SerializeField] private GameObject buttons;
     [SerializeField] private GameObject buildEffect;
+    [SerializeField] private GameObject upgradeEffect;
 
     private TowerPoint _selectedPoint;
 
@@ -86,6 +87,7 @@ public class TowerBuildController : MonoBehaviour
             Controller.Instance.Money -= upgradeCost;
             StartCoroutine(TowerUpgrading(Tower.SelectedTower.gameObject, upgrade));
             Tower.SelectedTower.PopUpMenu = false;
+            Tower.SelectedTower = null;
         }
     }
 
@@ -93,53 +95,8 @@ public class TowerBuildController : MonoBehaviour
     {
         buttons.SetActive(false);
     }
-    /*
+
     private IEnumerator TowerBuilding(GameObject newTower, TowerPoint point)
-    {
-        // Tower stuff
-        var towerScript = newTower.GetComponent<Tower>();
-        var buildTime = towerScript.buildTime;
-        var progressBarOffset = towerScript.buildBarOffset;
-        // Effect stuff
-        var effect = Instantiate(buildEffect, point.transform.position, Quaternion.identity);
-        var particleSystem = effect.GetComponent<ParticleSystem>();
-        var mainEffector = particleSystem.main;
-        mainEffector.duration = buildTime;
-        particleSystem.Play();
-        // ProgressBar stuff
-        var progressBar = Controller.Instance.PlaceHealthBar();
-        progressBar.transform.position = point.transform.position + progressBarOffset;
-        progressBar.SetValue(0);
-        // Point stuff
-        point.enabled = false;
-        var pointSr = point.GetComponent<SpriteRenderer>();
-        // Start
-        float startTime = Time.time;
-        for (float progress = 0; progress < 1; )
-        {
-            progress = Mathf.Lerp(0, 1, (Time.time - startTime) / buildTime);
-            progressBar.SetValue(progress);
-            pointSr.color = point.buildColorChange.Evaluate(progress);
-            yield return null;
-        }
-
-        var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
-        tower.GetComponent<Tower>().buildPoint = point;
-        Destroy(progressBar.gameObject);
-        Destroy(effect, particleSystem.main.startLifetime.constantMax);
-        startTime = Time.time;
-        for (float progress = 1; progress > 0; progress = Mathf.Lerp(1, 0, (Time.time - startTime)))
-        {
-            pointSr.color = new Color(1, 1, 1, Mathf.Exp(progress * 8 - 8));
-            yield return null;
-        }
-        point.enabled = true;
-        point.gameObject.SetActive(false);
-        point.SetHighlight(false);
-    }
-    */
-
-    private IEnumerator TowerBuilding(GameObject newTower, TowerPoint point) // New
     {
         // Point stuff
         point.gameObject.SetActive(false);
@@ -149,7 +106,7 @@ public class TowerBuildController : MonoBehaviour
         var progressBarOffset = towerScript.buildBarOffset;
         // Effect stuff
         var effect = Instantiate(buildEffect, point.transform.position, Quaternion.identity).GetComponent<EffectController>();
-        effect.SetDuration(buildTime);
+        effect.GetComponent<TimedDestruction>().StartDestruction(effect.SetDuration(buildTime));
         effect.PlayEffect();
         // ProgressBar stuff
         var progressBar = Controller.Instance.PlaceHealthBar();
@@ -173,26 +130,23 @@ public class TowerBuildController : MonoBehaviour
     private IEnumerator TowerUpgrading(GameObject oldTower, GameObject newTower)
     {
         // Tower stuff
-        var oldTowerScript = oldTower.GetComponent<Tower>();
         var upgradeScript = newTower.GetComponent<Tower>();
         var buildTime = upgradeScript.buildTime;
         var progressBarOffset = upgradeScript.buildBarOffset;
-        oldTowerScript.enabled = false;
-        // Point stuff
+        var oldTowerScript = oldTower.GetComponent<Tower>();
         var point = oldTowerScript.buildPoint;
+        var removeCost = oldTowerScript.removeCost;
+        Destroy(oldTowerScript);
         // Effect stuff
-        var effect = Instantiate(buildEffect, point.transform.position, Quaternion.identity);
-        var particleSystem = effect.GetComponent<ParticleSystem>();
-        var mainEffector = particleSystem.main;
-        mainEffector.duration = buildTime;
-        particleSystem.Play();
+        var effect = Instantiate(upgradeEffect, point.transform.position, Quaternion.identity).GetComponent<EffectController>();
+        effect.GetComponent<TimedDestruction>().StartDestruction(effect.SetDuration(buildTime));
+        effect.PlayEffect();
         // ProgressBar stuff
         var progressBar = Controller.Instance.PlaceHealthBar();
         progressBar.transform.position = point.transform.position + progressBarOffset;
         progressBar.SetValue(0);
         // Start
         float startTime = Time.time;
-
 
         for (float progress = 0; progress < 1;)
         {
@@ -204,10 +158,9 @@ public class TowerBuildController : MonoBehaviour
         var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
         var newTowerScript = tower.GetComponent<Tower>();
         newTowerScript.buildPoint = point;
-        newTowerScript.removeCost += oldTowerScript.removeCost;
+        newTowerScript.removeCost += removeCost;
         Destroy(oldTower);
 
         Destroy(progressBar.gameObject);
-        Destroy(effect, particleSystem.main.startLifetime.constantMax);
     }
 } 
