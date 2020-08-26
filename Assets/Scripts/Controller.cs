@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
@@ -12,7 +13,6 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject circlePrefab;
 
     [Header("Scene elements")]
-    [SerializeField] private LineRenderer enemyRoute;
     [SerializeField] private Canvas worldCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI lifesText;
     [SerializeField] private TMPro.TextMeshProUGUI killsText;
@@ -30,6 +30,9 @@ public class Controller : MonoBehaviour
     public int kills = 0;
     public int initMoney = 150;
     public float removeCostRatio = 0.4f;
+    public int levelSceneIndex = 1;
+
+    private LineRenderer enemyRoute;
 
     private int _money;
     public int Money 
@@ -65,6 +68,7 @@ public class Controller : MonoBehaviour
         {
             Instance = this;
             SpawnedEnemies = new LinkedList<Enemy>();
+            SceneManager.LoadScene(levelSceneIndex, LoadSceneMode.Additive); // Load level
         } else
         {
             Destroy(this);
@@ -73,12 +77,13 @@ public class Controller : MonoBehaviour
 
     void Start()
     {
-        enemyRoute.enabled = false; // Hide route line
         Money = initMoney; // Set money
         lifesText.text = $"Lifes left: {lifesCount}"; // Display lifes text
         killsText.text = $"Kills: {kills}"; // Display kills
         moneyText.text = $"Money: {Money}"; // Display money
         popupTowerMenu.ClosePopUp(); // Hide popup menu
+        enemyRoute = GameObject.FindGameObjectWithTag("EnemyRoute").GetComponent<LineRenderer>(); // Find enemy route in loaded level
+        enemyRoute.enabled = false; // Hide route line
     }
 
     public void StartWave()
