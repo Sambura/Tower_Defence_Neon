@@ -24,7 +24,7 @@ public class HealthBar : MonoBehaviour
     /// </summary>
     public bool AutoSelfDestruction { get; set; }
     /// <summary>
-    /// Whether healthbar should be hidden on full health or not (initial state considered as full health)
+    /// Whether healthbar should be hidden on full health or not
     /// </summary>
     public bool HideOnFull
     {
@@ -56,7 +56,7 @@ public class HealthBar : MonoBehaviour
     /// <summary>
     /// Sets health to the given value (between 0 and 1)
     /// </summary>
-   public void SetHealth(float newHealth) 
+   public void SetValue(float newHealth) 
     {
         slider.SetValueWithoutNotify(newHealth);
         if (HideOnFull)

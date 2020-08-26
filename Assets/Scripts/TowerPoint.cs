@@ -4,51 +4,57 @@ using UnityEngine;
 
 public class TowerPoint : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-    private bool _highlihted = false;
+    [SerializeField] private Color normalColor;
+    [SerializeField] private Color highlightedColor;
+    public Gradient buildColorChange;
 
-    private bool Highlighted
+    private bool highlighted = true;
+    private bool _selected = false;
+    private SpriteRenderer spriteRenderer;
+
+    public bool Selected
     {
         get
         {
-            return _highlihted;
+            return _selected;
         }
         set
         {
-            if (value == _highlihted) return;
-            if (value)
-                spriteRenderer.color = Color.green;
-            else
-                spriteRenderer.color = Color.white;
-            _highlihted = value;
+            _selected = value;
+            if (value) SetHighlight(true);
         }
+    }
+    
+    public void SetHighlight(bool value)
+    {
+        if (Selected)
+            if (highlighted) return;
+            else value = true;
+        if (value)
+            spriteRenderer.color = highlightedColor;
+        else
+            spriteRenderer.color = normalColor;
+        highlighted = value;
     }
 
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        SetHighlight(false); // Do not remove
     }
 
     private void OnMouseOver()
     {
-        if (Controller.Instance.IsBuilding != -1)
-        {
-            Highlighted = true;
-        }
+        SetHighlight(true);
     }
 
     private void OnMouseExit()
     {
-        Highlighted = false;
+        SetHighlight(false);
     }
 
     private void OnMouseUpAsButton()
     {
-        if (Controller.Instance.IsBuilding != -1)
-        {
-            Highlighted = false;
-            Controller.Instance.BuildTower(gameObject);
-            gameObject.SetActive(false);
-        }
+        TowerBuildController.Instance.PointPressed(this);
     }
 }

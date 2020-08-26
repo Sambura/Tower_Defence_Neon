@@ -6,26 +6,19 @@ using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
     [Header("Prefabs")]
-    [SerializeField] private GameObject[] towerPrefabs;
     [SerializeField] private GameObject[] enemyPrefab;
     [SerializeField] private GameObject healthBarPrefab;
     [SerializeField] private GameObject towerPreviewPrefab;
     [SerializeField] private GameObject circlePrefab;
 
     [Header("Scene elements")]
-    [SerializeField] private Button[] towerButtons;
     [SerializeField] private LineRenderer enemyRoute;
-    [SerializeField] private GameObject buildPoints;
     [SerializeField] private Canvas worldCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI lifesText;
     [SerializeField] private TMPro.TextMeshProUGUI killsText;
     [SerializeField] private TMPro.TextMeshProUGUI moneyText;
     [SerializeField] private GameObject gameOverScreen;
     public TowerPopUp popupTowerMenu;
-
-    [Header("Controller settings")]
-    [SerializeField] private Color defaultButtonColor;
-    [SerializeField] private Color pressedButtonColor;
 
     [Header("Other stuff")]
     public float skill = 1;
@@ -34,9 +27,9 @@ public class Controller : MonoBehaviour
     public float minPeriod = 0.2f;
     public int lifesCount = 5;
     public Camera mainCamera;
-    public float timeScale = 0.7f;
     public int kills = 0;
     public int initMoney = 150;
+    public float removeCostRatio = 0.4f;
 
     private int _money;
     public int Money 
@@ -78,56 +71,8 @@ public class Controller : MonoBehaviour
         }
     }
 
-    public void TowerButtonPressed(int towerIndex)
-    {
-        if (IsBuilding == -1) { // If not building, highlight button and set building index
-            IsBuilding = towerIndex;
-            var image = towerButtons[IsBuilding].GetComponent<Image>();
-            image.color = pressedButtonColor;
-            buildPoints.SetActive(true);
-            Time.timeScale = timeScale;
-            preview = Instantiate(towerPreviewPrefab).GetComponent<TowerPreview>();
-            preview.Tower = Instantiate(towerPrefabs[IsBuilding]);
-            preview.Circle = Instantiate(circlePrefab);
-            preview.Init();
-        } else // If already building
-        {
-            var image = towerButtons[IsBuilding].GetComponent<Image>(); // Unhighlight previous button (we should do it anyways)
-            image.color = defaultButtonColor;
-            bool sameButton = towerIndex == IsBuilding; // If we pressed the same button, we should stop building, else we should change building index
-            IsBuilding = -1;
-            Time.timeScale = 1;
-            Destroy(preview.gameObject);
-            if (!sameButton) // If we pressed not the same button, start building
-                TowerButtonPressed(towerIndex);
-            else
-                buildPoints.SetActive(false);
-        }
-    }
-
-    public void BuildTower(GameObject point)
-    {
-        if (Money >= towerPrefabs[IsBuilding].GetComponent<LaserTower>().cost)
-        {
-            Money -= towerPrefabs[IsBuilding].GetComponent<LaserTower>().cost;
-            var tower = Instantiate(towerPrefabs[IsBuilding], point.transform.position, Quaternion.identity);
-            tower.GetComponent<LaserTower>().buildPoint = point;
-            var image = towerButtons[IsBuilding].GetComponent<Image>();
-            image.color = defaultButtonColor;
-            IsBuilding = -1;
-            Time.timeScale = 1;
-            Destroy(preview.gameObject);
-            buildPoints.SetActive(false);
-        }
-    }
-
     void Start()
     {
-        foreach (var i in towerButtons) // Setting all buttons to defaut color
-        {
-            i.GetComponent<Image>().color = defaultButtonColor;
-        }
-        buildPoints.SetActive(false); // Hiding all building points
         enemyRoute.enabled = false; // Hide route line
         Money = initMoney; // Set money
         lifesText.text = $"Lifes left: {lifesCount}"; // Display lifes text
@@ -189,26 +134,5 @@ public class Controller : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
         Time.timeScale = 0;
-    }
-
-    public void RemoveTower()
-    {
-        Destroy(LaserTower.SelectedTower.gameObject);
-        LaserTower.SelectedTower.buildPoint.SetActive(true);
-        LaserTower.SelectedTower.PopUpMenu = false;
-    }
-
-    public void UpgradeTower()
-    {
-        var newTower = LaserTower.SelectedTower.upgrade;
-        if (Money >= newTower.GetComponent<LaserTower>().cost)
-        {
-            Money -= newTower.GetComponent<LaserTower>().cost;
-            var point = LaserTower.SelectedTower.buildPoint;
-            Destroy(LaserTower.SelectedTower.gameObject);
-            LaserTower.SelectedTower.PopUpMenu = false;
-            var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
-            tower.GetComponent<LaserTower>().buildPoint = point;
-        }
     }
 }

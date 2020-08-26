@@ -2,62 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserTower : MonoBehaviour
+public class LaserTower : Tower
 {
-    /// <summary>
-    /// GameObject of point that the tower standing on (needed in case of tower deletion)
-    /// </summary>
-    [HideInInspector] public GameObject buildPoint;
     public Animator animator;
-    public GameObject gun;
-    public GameObject circlePrefab;
-    public GameObject upgrade;
     public GameObject[] lasers;
-    public float radius = 2;
-    public float damage = 25;
-    public float fireRate = 3;
-    public int cost = 150;
 
-    private bool _popUpMenu = false;
-    public static LaserTower SelectedTower { get; set; }
-
-    public bool PopUpMenu
+    protected override void Start()
     {
-        get
-        {
-            return _popUpMenu;
-        }
-        set
-        {
-            _popUpMenu = value;
-            if (value)
-            {
-                if (SelectedTower != null)
-                {
-                    SelectedTower.Deselect();
-                }
-                Controller.Instance.popupTowerMenu.ShowPopUp(transform.position, (upgrade == null) ? -1 : (upgrade.GetComponent<LaserTower>().cost));
-                SelectedTower = this;
-            } else
-            {
-                Controller.Instance.popupTowerMenu.ClosePopUp();
-                SelectedTower = null;
-            }
-        }
-    }
-
-    private Enemy target;
-    private GameObject circle;
-
-    void Start()
-    {
+        base.Start();
         StartCoroutine(Fire());
-        circle = Instantiate(circlePrefab, transform);
-        circle.GetComponent<CircleDrawer>().Radius = radius;
-        circle.SetActive(false);
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (target != null)
         {
@@ -129,27 +85,5 @@ public class LaserTower : MonoBehaviour
     {
         if (target == null) return;
         target.TakeDamage(damage);
-    }
-
-    private void OnMouseEnter()
-    {
-        circle.SetActive(true);
-    }
-
-    private void OnMouseExit()
-    {
-        if (SelectedTower != this)
-            circle.SetActive(false);
-    }
-
-    private void OnMouseUpAsButton()
-    {
-        PopUpMenu = !PopUpMenu;
-    }
-
-    private void Deselect()
-    {
-        circle.SetActive(false);
-        PopUpMenu = false;
     }
 }

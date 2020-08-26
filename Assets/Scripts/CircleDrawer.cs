@@ -36,4 +36,10 @@ public class CircleDrawer : MonoBehaviour
             lineRenderer.SetPosition(i, new Vector3(Radius * Mathf.Cos(angle), Radius * Mathf.Sin(angle)));
         }
     }
+
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, _radius);
+    }
 }
