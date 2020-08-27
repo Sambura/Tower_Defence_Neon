@@ -17,4 +17,11 @@ public class SlowingTower : Tower
             }
         }
     }
+
+    public override void PrepareForUpgrade()
+    {
+        gun.GetComponent<ParticleSystem>().Stop();
+        circle.SetActive(false);
+        Destroy(this);
+    }
 }

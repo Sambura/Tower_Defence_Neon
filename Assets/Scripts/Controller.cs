@@ -34,6 +34,7 @@ public class Controller : MonoBehaviour
 
     private LineRenderer enemyRoute;
 
+    public event System.Action<int> OnMoneyChanged;
     private int _money;
     public int Money 
     {
@@ -44,9 +45,12 @@ public class Controller : MonoBehaviour
         set
         {
             _money = value;
-            moneyText.text = Money.ToString();
+            moneyText.text = value.ToString();
+            OnMoneyChanged?.Invoke(value);
         }
     }
+
+    public float CurrentRemoveRatio { get; set; } = 1;
 
     /// <summary>
     /// List of all alive enemies
@@ -88,6 +92,7 @@ public class Controller : MonoBehaviour
 
     public void StartWave()
     {
+        CurrentRemoveRatio = removeCostRatio;
         StartCoroutine(Spawner(initialPeriod, periodFactor));
     }
 

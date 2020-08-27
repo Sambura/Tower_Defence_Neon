@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TowerBuildController : MonoBehaviour
 {
-    [SerializeField] private GameObject buttons;
+    [SerializeField] private GameObject menuObject;
+    [SerializeField] private float yOffset;
     [SerializeField] private GameObject buildEffect;
     [SerializeField] private GameObject upgradeEffect;
     [SerializeField] private GameObject removeEffect;
@@ -24,7 +25,9 @@ public class TowerBuildController : MonoBehaviour
             else if (value != null)
                 value.Selected = true;
             _selectedPoint = value;
-            buttons.SetActive(value != null);
+            if (value != null)
+                menuObject.transform.position = _selectedPoint.transform.position + new Vector3(0, yOffset * (_selectedPoint.transform.position.y > 0 ? -1 : 1));
+            menuObject.SetActive(value != null);
         }
     }
 
@@ -96,7 +99,7 @@ public class TowerBuildController : MonoBehaviour
 
     private void Start()
     {
-        buttons.SetActive(false);
+        menuObject.SetActive(false);
     }
 
     private IEnumerator TowerBuilding(GameObject newTower, TowerPoint point)

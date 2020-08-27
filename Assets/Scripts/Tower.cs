@@ -39,7 +39,8 @@ public class Tower : MonoBehaviour
                 {
                     SelectedTower.Deselect();
                 }
-                Controller.Instance.popupTowerMenu.ShowPopUp(transform.position, (upgrade == null) ? -1 : (upgrade.GetComponent<Tower>().cost), removeCost);
+                Controller.Instance.popupTowerMenu.ShowPopUp(transform.position, (upgrade == null) ? -1 :
+                    (upgrade.GetComponent<Tower>().cost), (int)(removeCost * Controller.Instance.CurrentRemoveRatio));
                 SelectedTower = this;
             }
             else
@@ -59,7 +60,7 @@ public class Tower : MonoBehaviour
         circle = Instantiate(circlePrefab, transform);
         circle.GetComponent<CircleDrawer>().Radius = radius;
         circle.SetActive(false);
-        removeCost += (int)(cost * Controller.Instance.removeCostRatio);
+        removeCost += cost;
     }
 
     protected virtual void OnMouseEnter()
