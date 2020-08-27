@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public float rotationTime = 0.7f;
     public Vector3 healthBarOffset;
     public int cost;
+    public GameObject destructionEffect;
     /// <summary>
     /// Route is contained in positions of LineRenderer
     /// </summary>
@@ -125,8 +126,9 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+            var effect = Instantiate(destructionEffect, transform.position, Quaternion.identity).GetComponent<ParticleSystemRenderer>();
+            effect.material = GetComponent<SpriteRenderer>().sharedMaterial;
             Controller.Instance.Money += cost;
-            Controller.Instance.kills++;
             if (ListNode != null)
                 if (ListNode.List != null)
                     ListNode.List.Remove(ListNode);

@@ -15,24 +15,18 @@ public class Controller : MonoBehaviour
     [Header("Scene elements")]
     [SerializeField] private Canvas worldCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI lifesText;
-    [SerializeField] private TMPro.TextMeshProUGUI killsText;
     [SerializeField] private TMPro.TextMeshProUGUI moneyText;
     [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private GameObject levelCompleteScreen;
+    [SerializeField] private GameObject skipDelayButton;
     public TowerPopUp popupTowerMenu;
 
     [Header("Other stuff")]
-    public float skill = 1;
-    public float initialPeriod = 2;
-    public float periodFactor = 1;
-    public float minPeriod = 0.2f;
-    public int lifesCount = 5;
     public Camera mainCamera;
-    public int kills = 0;
-    public int initMoney = 150;
     public float removeCostRatio = 0.4f;
     public int levelSceneIndex = 1;
 
-    private LineRenderer enemyRoute;
+    private int lifesCount;
 
     public event System.Action<int> OnMoneyChanged;
     private int _money;
@@ -66,6 +60,8 @@ public class Controller : MonoBehaviour
     public int IsBuilding { get; set; } = -1;
     public TowerPreview preview;
 
+    private LevelSetup levelSetup;
+
     private void Awake()
     {
         if (Instance == null)
@@ -79,42 +75,62 @@ public class Controller : MonoBehaviour
         }
     }
 
+    public void SetSkipButtonActive(bool value)
+    {
+        skipDelayButton.SetActive(value);
+    }
+
     void Start()
     {
-        Money = initMoney; // Set money
-        lifesText.text = lifesCount.ToString(); // Display lifes text
-        killsText.text = $"Kills: {kills}"; // Display kills
-        moneyText.text = Money.ToString(); // Display money
         popupTowerMenu.ClosePopUp(); // Hide popup menu
-        enemyRoute = GameObject.FindGameObjectWithTag("EnemyRoute").GetComponent<LineRenderer>(); // Find enemy route in loaded level
-        enemyRoute.enabled = false; // Hide route line
+        levelSetup = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelSetup>(); // Get level setup
+        levelSetup.enemyRoute.enabled = false; // Hide route line
+        Money = levelSetup.initialMoney; // Set money
+        lifesCount = levelSetup.initialLifes;
+        lifesText.text = lifesCount.ToString(); // Display lifes text
+        moneyText.text = Money.ToString(); // Display money
     }
 
     public void StartWave()
     {
         CurrentRemoveRatio = removeCostRatio;
-        StartCoroutine(Spawner(initialPeriod, periodFactor));
+        levelSetup.NextWave();
     }
 
-    /// <summary>
-    /// Spawner spawns enemies
-    /// </summary>
-    /// <param name="period">Delay between spawns</param>
-    /// <param name="factor">Period is being multiplied by this factor after each spawn</param>
-    private IEnumerator Spawner(float period, float factor)
+    public void SkipDelay()
     {
-        while (true)
+        levelSetup.SkipDelay();
+    }
+
+    public void FinishLevel()
+    {
+        if (lifesCount == 0) return;
+        StartCoroutine(LevelCompleted());
+    }
+
+    private IEnumerator LevelCompleted()
+    {
+        var towers = FindObjectsOfType<Tower>();
+        yield return new WaitForSeconds(1);
+        for (int i = 0; i < towers.Length; i++)
         {
-            var newEnemy = Instantiate(enemyPrefab[Random.Range(0, enemyPrefab.Length)], enemyRoute.GetPosition(0), Quaternion.identity).GetComponent<Enemy>();
-            newEnemy.Route = enemyRoute;
-            newEnemy.ListNode = SpawnedEnemies.AddLast(newEnemy);
-            yield return new WaitForSeconds(period);
-            if (period > minPeriod)
-                period *= factor;
-            else
-                period = minPeriod;
-            killsText.text = $"Kills: {kills}";
+            Tower.SelectedTower = towers[i];
+            TowerBuildController.Instance.RemoveTower();
+            yield return new WaitForSeconds(0.3f);
         }
+        levelCompleteScreen.SetActive(true);
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
+        Destroy(this);
+    }
+
+    public void SetTimeScale(float value)
+    {
+        Time.timeScale = value;
     }
 
     public HealthBar PlaceHealthBar()

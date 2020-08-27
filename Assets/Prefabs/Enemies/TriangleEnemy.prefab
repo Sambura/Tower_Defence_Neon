@@ -99,3 +99,5 @@ MonoBehaviour:
   rotationTime: 0.2
   healthBarOffset: {x: 0, y: -0.4, z: 0}
   cost: 20
+  destructionEffect: {fileID: 3549251252915314664, guid: d6cb0fd15047dda4eb283467d974e278,
+    type: 3}

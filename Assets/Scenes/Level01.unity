@@ -6342,7 +6342,7 @@ GameObject:
   - component: {fileID: 1490985584}
   m_Layer: 0
   m_Name: Route
-  m_TagString: EnemyRoute
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6553,9 +6553,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1549317832}
+  - component: {fileID: 1549317833}
   m_Layer: 0
   m_Name: Level
-  m_TagString: Untagged
+  m_TagString: LevelData
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6578,6 +6579,76 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1549317833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549317831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c354d44e0fdb4241a4c36e185a498e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyRoute: {fileID: 1490985584}
+  initialMoney: 250
+  initialLifes: 5
+  enemyWaves:
+  - enemiesCount: 10
+    enemies:
+    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+        type: 3}
+      spawnRatio: 1
+    spawnRate: 0.3
+    startDelay: 0
+    endDelay: 0
+    waitForElimination: 1
+  - enemiesCount: 18
+    enemies:
+    - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+        type: 3}
+      spawnRatio: 1
+    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+        type: 3}
+      spawnRatio: 1
+    spawnRate: 0.6
+    startDelay: 10
+    endDelay: 2
+    waitForElimination: 0
+  - enemiesCount: 3
+    enemies:
+    - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+        type: 3}
+      spawnRatio: 1
+    spawnRate: 0.8
+    startDelay: 0
+    endDelay: 0
+    waitForElimination: 1
+  - enemiesCount: 40
+    enemies:
+    - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+        type: 3}
+      spawnRatio: 1
+    - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+        type: 3}
+      spawnRatio: 3.5
+    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+        type: 3}
+      spawnRatio: 3.5
+    spawnRate: 1
+    startDelay: 10
+    endDelay: 2
+    waitForElimination: 0
+  - enemiesCount: 5
+    enemies:
+    - enemyPrefab: {fileID: 5976164525222817708, guid: 90e56434568529840bb4c9e188510ec0,
+        type: 3}
+      spawnRatio: 1
+    spawnRate: 0.8
+    startDelay: 0
+    endDelay: 0
+    waitForElimination: 1
 --- !u!4 &1567913373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5748335099162707400, guid: 2770826f3048f8b45a592a337dd0f87f,

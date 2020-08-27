@@ -27,6 +27,7 @@ public class TowerPopUp : MonoBehaviour
         isOpened = true;
         menuObject.transform.position = position + new Vector2(0, yOffset * (position.y > 0 ? -1 : 1));
 
+        upgradeCostNow = upgradeCost;
         if (upgradeCost == -1) // If there is no upgrade
         {
             upgradeCostText.text = absentCostFiller;
@@ -35,8 +36,6 @@ public class TowerPopUp : MonoBehaviour
         else // If there is upgrade
         {
             upgradeCostText.text = upgradeCost.ToString(); // Display its cost
-            upgradeCostNow = upgradeCost; // And save to the variable
-
             upgradeButton.interactable = Controller.Instance.Money >= upgradeCostNow; // If insufficient money, not interactable
         }
 
@@ -56,7 +55,7 @@ public class TowerPopUp : MonoBehaviour
 
     private void OnMoneyChanged(int money)
     {
-        if (isOpened)
+        if (isOpened && upgradeCostNow != -1)
             upgradeButton.interactable = money >= upgradeCostNow;
     }
 
