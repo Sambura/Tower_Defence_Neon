@@ -20,15 +20,15 @@ public class AreaTower : Tower
         }
         if (target == null)
         {
-            float lastProgress = 0;
+            float lastDistance = 0;
             foreach (var i in Controller.Instance.SpawnedEnemies)
             {
                 if (Vector2.Distance(transform.position, i.transform.position) <= radius)
                 {
-                    if (target == null || lastProgress < i.RouteProgress)
+                    if (target == null || lastDistance > i.DistanceToFinish)
                     {
                         target = i;
-                        lastProgress = i.RouteProgress;
+                        lastDistance = i.DistanceToFinish;
                     }
                 }
             }

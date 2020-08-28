@@ -79,7 +79,7 @@ public class Tower : MonoBehaviour
         PopUpMenu = !PopUpMenu;
     }
 
-    protected virtual void Deselect()
+    public virtual void Deselect()
     {
         circle.SetActive(false);
         PopUpMenu = false;

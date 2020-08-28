@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: 0.5
   maxHealth: 400
-  rotationTime: 0.1
+  rotationTime: 0.7
   healthBarOffset: {x: 0, y: -0.4, z: 0}
   cost: 25
   destructionEffect: {fileID: 3549251252915314664, guid: d6cb0fd15047dda4eb283467d974e278,

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class TowerBuildController : MonoBehaviour
@@ -9,6 +10,7 @@ public class TowerBuildController : MonoBehaviour
     [SerializeField] private GameObject buildEffect;
     [SerializeField] private GameObject upgradeEffect;
     [SerializeField] private GameObject removeEffect;
+    [SerializeField] private int screenWidth = 1920;
 
     private TowerPoint _selectedPoint;
 
@@ -26,7 +28,30 @@ public class TowerBuildController : MonoBehaviour
                 value.Selected = true;
             _selectedPoint = value;
             if (value != null)
-                menuObject.transform.position = _selectedPoint.transform.position + new Vector3(0, yOffset * (_selectedPoint.transform.position.y > 0 ? -1 : 1));
+            {
+                if (Tower.SelectedTower != null)
+                {
+                    Tower.SelectedTower.Deselect();
+                }
+                float xBorder = Mathf.Abs(Controller.Instance.mainCamera.ScreenToWorldPoint(Vector3.zero).x);
+                float width = xBorder * 2 * menuObject.GetComponent<RectTransform>().rect.width / screenWidth;
+                if (_selectedPoint.transform.position.x + width / 2 > xBorder)
+                {
+                    menuObject.transform.position =
+                        new Vector2(xBorder - width / 2,
+                        _selectedPoint.transform.position.y + yOffset * (_selectedPoint.transform.position.y > 0 ? -1 : 1));
+                }
+                else if (_selectedPoint.transform.position.x - width / 2 < -xBorder)
+                {
+                    menuObject.transform.position =
+                        new Vector2(-xBorder + width / 2,
+                        _selectedPoint.transform.position.y + yOffset * (_selectedPoint.transform.position.y > 0 ? -1 : 1));
+                }
+                else
+                    menuObject.transform.position =
+                        new Vector2(_selectedPoint.transform.position.x,
+                        _selectedPoint.transform.position.y + yOffset * (_selectedPoint.transform.position.y > 0 ? -1 : 1));
+            }
             menuObject.SetActive(value != null);
         }
     }
@@ -62,16 +87,13 @@ public class TowerBuildController : MonoBehaviour
         SelectedPoint = point;
     }
 
-    public void BuildTower(GameObject towerPrefab)
+    public void BuildTower(TowerBuildButton towerPrefabHolder)
     {
-        int towerCost = towerPrefab.GetComponent<Tower>().cost;
-        if (Controller.Instance.Money >= towerCost)
-        {
-            Controller.Instance.Money -= towerCost;
-            SelectedPoint.Selected = false; // Do not move
-            StartCoroutine(TowerBuilding(towerPrefab, SelectedPoint));
-            SelectedPoint = null;
-        }
+        int towerCost = towerPrefabHolder.towerPrefab.GetComponent<Tower>().cost;
+        Controller.Instance.Money -= towerCost;
+        SelectedPoint.Selected = false; // Do not move
+        StartCoroutine(TowerBuilding(towerPrefabHolder.towerPrefab, SelectedPoint));
+        SelectedPoint = null;
     }
 
     public void RemoveTower()

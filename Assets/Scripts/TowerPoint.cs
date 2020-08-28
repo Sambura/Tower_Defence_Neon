@@ -5,9 +5,9 @@ using UnityEngine;
 public class TowerPoint : MonoBehaviour
 {
     [SerializeField] private Color normalColor;
-    [SerializeField] private Color highlightedColor;
+    [SerializeField] private Color hoverColor;
+    [SerializeField] private Color selectedColor;
 
-    private bool highlighted = true;
     private bool _selected = false;
     private SpriteRenderer spriteRenderer;
 
@@ -27,13 +27,16 @@ public class TowerPoint : MonoBehaviour
     public void SetHighlight(bool value)
     {
         if (Selected)
-            if (highlighted) return;
-            else value = true;
-        if (value)
-            spriteRenderer.color = highlightedColor;
+        {
+            spriteRenderer.color = selectedColor;
+        }
         else
-            spriteRenderer.color = normalColor;
-        highlighted = value;
+        {
+            if (value)
+                spriteRenderer.color = hoverColor;
+            else
+                spriteRenderer.color = normalColor;
+        }
     }
 
     void Start()

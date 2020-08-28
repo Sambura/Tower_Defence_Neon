@@ -7,10 +7,8 @@ using UnityEngine.UI;
 public class Controller : MonoBehaviour
 {
     [Header("Prefabs")]
-    [SerializeField] private GameObject[] enemyPrefab;
     [SerializeField] private GameObject healthBarPrefab;
-    [SerializeField] private GameObject towerPreviewPrefab;
-    [SerializeField] private GameObject circlePrefab;
+    [SerializeField] private Sprite[] heartSprites;
 
     [Header("Scene elements")]
     [SerializeField] private Canvas worldCanvas;
@@ -18,7 +16,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI moneyText;
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject levelCompleteScreen;
-    [SerializeField] private GameObject skipDelayButton;
+    [SerializeField] private TimedButton skipDelayButton;
+    [SerializeField] private Image heartSprite;
     public TowerPopUp popupTowerMenu;
 
     [Header("Other stuff")]
@@ -30,6 +29,7 @@ public class Controller : MonoBehaviour
 
     public event System.Action<int> OnMoneyChanged;
     private int _money;
+    private bool smoothMoneyDisplayInRun;
     public int Money 
     {
         get
@@ -38,8 +38,10 @@ public class Controller : MonoBehaviour
         }
         set
         {
+            var lastMoney = _money;
             _money = value;
-            moneyText.text = value.ToString();
+            if (!smoothMoneyDisplayInRun)
+                StartCoroutine(DisplayMoneySmoothly(lastMoney));
             OnMoneyChanged?.Invoke(value);
         }
     }
@@ -75,18 +77,29 @@ public class Controller : MonoBehaviour
         }
     }
 
-    public void SetSkipButtonActive(bool value)
+    private IEnumerator DisplayMoneySmoothly(float lastMoney)
     {
-        skipDelayButton.SetActive(value);
+        smoothMoneyDisplayInRun = true;
+        for (; lastMoney != Money; lastMoney += 0.1f * (Money - lastMoney))
+        {
+            if (Mathf.Abs(Money - lastMoney) < 0.5f) lastMoney = Money;
+            moneyText.text = ((int)lastMoney).ToString();
+            yield return new WaitForFixedUpdate();
+        }
+        smoothMoneyDisplayInRun = false;
+    }
+
+    public void ShowSkipButton(float time)
+    {
+        skipDelayButton.Show(time);
     }
 
     void Start()
     {
         popupTowerMenu.ClosePopUp(); // Hide popup menu
         levelSetup = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelSetup>(); // Get level setup
-        levelSetup.enemyRoute.enabled = false; // Hide route line
         Money = levelSetup.initialMoney; // Set money
-        lifesCount = levelSetup.initialLifes;
+        lifesCount = levelSetup.initialLifes; // Set lifes
         lifesText.text = lifesCount.ToString(); // Display lifes text
         moneyText.text = Money.ToString(); // Display money
     }
@@ -143,6 +156,8 @@ public class Controller : MonoBehaviour
         if (lifesCount == 0) return;
         lifesCount--;
         lifesText.text = lifesCount.ToString();
+        if (lifesCount > levelSetup.initialLifes * 0.4f) heartSprite.sprite = heartSprites[1]; else heartSprite.sprite = heartSprites[2];
+
         if (lifesCount == 0)
         {
             StartCoroutine(GameOver());

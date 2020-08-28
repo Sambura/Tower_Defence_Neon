@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelSetup : MonoBehaviour
 {
-    public LineRenderer enemyRoute;
+    public LineRenderer[] enemyRoutes;
     public int initialMoney = 1000;
     public int initialLifes = 10;
     public List<EnemyWave> enemyWaves;
@@ -15,10 +15,21 @@ public class LevelSetup : MonoBehaviour
     private bool allSpawned;
     private EnemyWave wave;
     private bool waveStarted;
+    private List<float> routeLengths;
 
     private void Awake()
     {
-        enemyRoute.gameObject.SetActive(false);
+        routeLengths = new List<float>();
+        foreach (var i in enemyRoutes)
+        {
+            i.gameObject.SetActive(false);
+            float localLength = 0;
+            for (int j = 1; j < i.positionCount; j++)
+            {
+                localLength += Vector2.Distance(i.GetPosition(j), i.GetPosition(j - 1));
+            }
+            routeLengths.Add(localLength);
+        }
     }
 
     public void NextWave()
@@ -31,14 +42,14 @@ public class LevelSetup : MonoBehaviour
         else
         {
             wave = enemyWaves[waveIndex];
-            nextSpawn = Time.time + 1 / wave.spawnRate + wave.startDelay;
+            nextSpawn = Time.time + wave.startDelay;
             allSpawned = false;
             waveIndex++;
             InitializeWave();
             if (wave.startDelay > 0)
             {
                 waveStarted = false;
-                Controller.Instance.SetSkipButtonActive(true);
+                Controller.Instance.ShowSkipButton(wave.startDelay);
             }
             else waveStarted = true;
         }
@@ -46,6 +57,7 @@ public class LevelSetup : MonoBehaviour
 
     public void SkipDelay()
     {
+        if (waveStarted) return;
         waveStarted = true;
         nextSpawn = Time.time;
     }
@@ -86,14 +98,12 @@ public class LevelSetup : MonoBehaviour
         if (wave == null) return;
         while (Time.time >= nextSpawn && !allSpawned)
         {
-            if (!waveStarted)
-            {
-                waveStarted = true;
-                Controller.Instance.SetSkipButtonActive(false);
-            }
+            waveStarted = true;
             int enemyIndex = Random.Range(0, wave.enemies.Count);
-            var enemy = Instantiate(wave.enemies[enemyIndex].enemyPrefab, enemyRoute.GetPosition(0), Quaternion.identity).GetComponent<Enemy>();
-            enemy.Route = enemyRoute;
+            int routeIndex = Random.Range(0, enemyRoutes.Length);
+            var enemy = Instantiate(wave.enemies[enemyIndex].enemyPrefab, enemyRoutes[routeIndex].GetPosition(0), Quaternion.identity).GetComponent<Enemy>();
+            enemy.Route = enemyRoutes[routeIndex];
+            enemy.DistanceToFinish = routeLengths[routeIndex];
             enemy.ListNode = Controller.Instance.SpawnedEnemies.AddLast(enemy);
             wave.enemies[enemyIndex].SpawnCount--;
             if (wave.enemies[enemyIndex].SpawnCount <= 0) wave.enemies.RemoveAt(enemyIndex);

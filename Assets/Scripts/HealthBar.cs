@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
+    [SerializeField] private Image slider;
     [SerializeField] private GameObject graphics;
 
     private bool _hideOnFull;
@@ -35,7 +35,7 @@ public class HealthBar : MonoBehaviour
         set
         {
             _hideOnFull = value;
-            if (value && slider.value == 1)
+            if (value && slider.fillAmount == 1)
             {
                 graphics.SetActive(false);
             }
@@ -58,7 +58,7 @@ public class HealthBar : MonoBehaviour
     /// </summary>
    public void SetValue(float newHealth) 
     {
-        slider.SetValueWithoutNotify(newHealth);
+        slider.fillAmount = newHealth;
         if (HideOnFull)
         {
             graphics.SetActive(newHealth != 1);

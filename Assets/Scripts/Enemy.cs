@@ -16,9 +16,9 @@ public class Enemy : MonoBehaviour
     public LineRenderer Route { get; set; }
     public LinkedListNode<Enemy> ListNode { get; set; }
     /// <summary>
-    /// Represents how close enemy to the route's end [0..1]
+    /// Represents how close enemy to the route's end [0..positiveInfinity]
     /// </summary>
-    public float RouteProgress { get; set; }
+    public float DistanceToFinish { get; set; }
 
     /// <summary>
     /// Node index in route to which unit is moving now
@@ -66,6 +66,8 @@ public class Enemy : MonoBehaviour
             }
         }
         float deltaDistance = velocity * Time.deltaTime * velocityFactor;
+        DistanceToFinish -= deltaDistance;
+        if (DistanceToFinish < 0) DistanceToFinish = 0;
         while (deltaDistance > 0)
         {
             float distance = Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex));
@@ -94,16 +96,6 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-        if (Route.positionCount == nextNodeIndex) RouteProgress = 1;
-        else
-            RouteProgress =
-            (
-            nextNodeIndex - 1 // Progress among route segments, plus...
-            + Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex - 1)) // ...Progress on current segment (less then 1 / segmentsCount)
-            /
-            Vector2.Distance(Route.GetPosition(nextNodeIndex - 1), Route.GetPosition(nextNodeIndex))
-            )
-            / (Route.positionCount - 1); // Over segmentsCount
     }
 
     private IEnumerator Rotate(Quaternion targetRotation, float time)
