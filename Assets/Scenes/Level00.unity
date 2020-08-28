@@ -6591,31 +6591,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c354d44e0fdb4241a4c36e185a498e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyRoute: {fileID: 1490985584}
-  initialMoney: 2500
-  initialLifes: 5000
+  enemyRoutes:
+  - {fileID: 1490985584}
+  initialMoney: 7000
+  initialLifes: 50000
   enemyWaves:
-  - enemiesCount: 100000
-    enemies:
-    - enemyPrefab: {fileID: 9197484327864900182, guid: d319f5ab45c61004db3b08ace1d58c85,
-        type: 3}
-      spawnRatio: 1
-    - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
-        type: 3}
-      spawnRatio: 1
-    - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
-        type: 3}
-      spawnRatio: 1
-    - enemyPrefab: {fileID: 5976164525222817708, guid: 90e56434568529840bb4c9e188510ec0,
-        type: 3}
-      spawnRatio: 1
-    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
-        type: 3}
-      spawnRatio: 1
+  - waves:
+    - enemiesCount: 100000
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
+        spawnRatio: 1
+      - enemyPrefab: {fileID: 9197484327864900182, guid: d319f5ab45c61004db3b08ace1d58c85,
+          type: 3}
+        spawnRatio: 1
+      - enemyPrefab: {fileID: 5976164525222817708, guid: 90e56434568529840bb4c9e188510ec0,
+          type: 3}
+        spawnRatio: 1
+      - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+          type: 3}
+        spawnRatio: 1
+      - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+          type: 3}
+        spawnRatio: 1
     spawnRate: 20
     startDelay: 0
     endDelay: 0
-    waitForElimination: 0
+    waitForElimination: 1
 --- !u!4 &1567913373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5748335099162707400, guid: 2770826f3048f8b45a592a337dd0f87f,

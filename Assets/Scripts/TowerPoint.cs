@@ -57,6 +57,6 @@ public class TowerPoint : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        TowerBuildController.Instance.PointPressed(this);
+        TowerManager.Instance.PointPressed(this);
     }
 }

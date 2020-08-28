@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
     private float health;
 
     private List<Effect> velocityChange = new List<Effect>();
+    private Vector2 routeOffset;
 
     public void InflictEffect(Effect effect)
     {
@@ -42,19 +43,24 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         health = maxHealth;
-        var direction = Route.GetPosition(nextNodeIndex) - transform.position;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
         healthBar = Controller.Instance.PlaceHealthBar();
         healthBar.FollowTarget = transform;
         healthBar.HideOnFull = true;
         healthBar.AutoSelfDestruction = true;
         healthBar.PositionOffset = healthBarOffset;
         healthBar.SetValue(1);
+        routeOffset = Random.insideUnitCircle * Route.GetPosition(0).z / 2;
+        transform.position = transform.position;
+        DistanceToFinish += Vector2.Distance(transform.position, (Vector2)Route.GetPosition(nextNodeIndex) + routeOffset) 
+            - Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex));
+        var direction = Route.GetPosition(nextNodeIndex) + (Vector3)routeOffset - transform.position;
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
     }
 
     void Update()
     {
         if (nextNodeIndex == Route.positionCount) return;
+        // Inflicting vlocity effects
         float velocityFactor = 1;
         for (var i = 0; i < velocityChange.Count; i++)
         {
@@ -65,15 +71,17 @@ public class Enemy : MonoBehaviour
                 i--;
             }
         }
+        // Calculating new position
         float deltaDistance = velocity * Time.deltaTime * velocityFactor;
         DistanceToFinish -= deltaDistance;
-        if (DistanceToFinish < 0) DistanceToFinish = 0;
+        if (DistanceToFinish < 0) DistanceToFinish = 0; // In theory this value can run significantly less then zero due to route offset
         while (deltaDistance > 0)
         {
-            float distance = Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex));
+            Vector2 destination = (Vector2)Route.GetPosition(nextNodeIndex) + (nextNodeIndex == Route.positionCount - 1 ? Vector2.zero : routeOffset);
+            float distance = Vector2.Distance(transform.position, destination);
             if (deltaDistance < distance)
             {
-                transform.position = Vector2.Lerp(transform.position, Route.GetPosition(nextNodeIndex), deltaDistance / distance);
+                transform.position = Vector2.Lerp(transform.position, destination, deltaDistance / distance);
                 break;
             }
             else
@@ -91,7 +99,7 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    var direction = Route.GetPosition(nextNodeIndex) - transform.position;
+                    var direction = Route.GetPosition(nextNodeIndex) + (Vector3)routeOffset - transform.position;
                     StartCoroutine(Rotate(Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg), rotationTime));
                 }
             }

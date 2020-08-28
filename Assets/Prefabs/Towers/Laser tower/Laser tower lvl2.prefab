@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1811109097205758164}
   - component: {fileID: 4912450057554701171}
   m_Layer: 0
-  m_Name: Simple tower lvl1
+  m_Name: Laser tower lvl2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: dd1a8f5291609b74c940dc40835f0970, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a673e00ea9f345e4189ee6e60f89f7df, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -127,12 +127,12 @@ MonoBehaviour:
   gun: {fileID: 4979671540579378496}
   circlePrefab: {fileID: 9044926532029320617, guid: 6502cf0ec2d7f6d44b4d9b638cdb182a,
     type: 3}
-  upgrade: {fileID: 1240431536469242377, guid: 07b87c5ed0b74da43957a41a09df39ec, type: 3}
+  upgrade: {fileID: 1240431536469242377, guid: 2c02c8ece37fb8249b3e432608206c23, type: 3}
   radius: 3
-  damage: 25
-  fireRate: 3
-  cost: 150
-  buildTime: 1
+  damage: 110
+  fireRate: 1.25
+  cost: 225
+  buildTime: 2
   buildBarOffset: {x: 0, y: -0.5, z: 0}
   particleMaterial: {fileID: 2100000, guid: 20bab14126e9ca34381655c307f65468, type: 2}
   removeCost: 0
@@ -229,7 +229,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 455e41e4496412d4a8896999cca41db6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a6ed541dbb3f71e44a9a97977ad9f982, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

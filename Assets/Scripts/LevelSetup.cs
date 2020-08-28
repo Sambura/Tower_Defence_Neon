@@ -19,6 +19,7 @@ public class LevelSetup : MonoBehaviour
 
     private void Awake()
     {
+        // Calculate routes' length
         routeLengths = new List<float>();
         foreach (var i in enemyRoutes)
         {
@@ -30,6 +31,8 @@ public class LevelSetup : MonoBehaviour
             }
             routeLengths.Add(localLength);
         }
+        // Initialize all waves
+        InitializeWaves();
     }
 
     public void NextWave()
@@ -45,7 +48,6 @@ public class LevelSetup : MonoBehaviour
             nextSpawn = Time.time + wave.startDelay;
             allSpawned = false;
             waveIndex++;
-            InitializeWave();
             if (wave.startDelay > 0)
             {
                 waveStarted = false;
@@ -62,53 +64,36 @@ public class LevelSetup : MonoBehaviour
         nextSpawn = Time.time;
     }
 
-    private void InitializeWave()
-    {
-        // Calculate each type of enemies count
-        int enemiesToSpawn = wave.enemiesCount;
-        float overallRatio = 0;
-        foreach (var i in wave.enemies)
-        {
-            overallRatio += i.spawnRatio;
-        }
-        foreach (var i in wave.enemies)
-        {
-            i.SpawnCount = Mathf.Min(Mathf.RoundToInt(wave.enemiesCount * i.spawnRatio / overallRatio), enemiesToSpawn);
-            enemiesToSpawn -= i.SpawnCount;
-        }
-
-        while (enemiesToSpawn > 0)
-        {
-            wave.enemies[Random.Range(0, wave.enemies.Count)].SpawnCount++;
-            enemiesToSpawn--;
-        }
-
-        for (var i = 0; i < wave.enemies.Count; i++)
-        {
-            if (wave.enemies[i].SpawnCount <= 0)
-            {
-                wave.enemies.RemoveAt(i);
-                i--;
-            }
-        }
-    }
-
     private void Update()
     {
         if (wave == null) return;
         while (Time.time >= nextSpawn && !allSpawned)
         {
             waveStarted = true;
-            int enemyIndex = Random.Range(0, wave.enemies.Count);
-            int routeIndex = Random.Range(0, enemyRoutes.Length);
-            var enemy = Instantiate(wave.enemies[enemyIndex].enemyPrefab, enemyRoutes[routeIndex].GetPosition(0), Quaternion.identity).GetComponent<Enemy>();
-            enemy.Route = enemyRoutes[routeIndex];
-            enemy.DistanceToFinish = routeLengths[routeIndex];
-            enemy.ListNode = Controller.Instance.SpawnedEnemies.AddLast(enemy);
-            wave.enemies[enemyIndex].SpawnCount--;
-            if (wave.enemies[enemyIndex].SpawnCount <= 0) wave.enemies.RemoveAt(enemyIndex);
+            int routesEnded = 0;
+            for (var routeIndex = 0; routeIndex < wave.waves.Length; routeIndex++)
+            {
+                if (wave.waves[routeIndex].enemies.Count == 0)
+                {
+                    routesEnded++;
+                    continue;
+                }
+                int enemyIndex = Random.Range(0, wave.waves[routeIndex].enemies.Count);
+                var spawnPosition = enemyRoutes[routeIndex].GetPosition(0);
+                var enemy = Instantiate(wave.waves[routeIndex].enemies[enemyIndex].enemyPrefab, 
+                    (Vector2)spawnPosition, Quaternion.identity).GetComponent<Enemy>();
+                enemy.Route = enemyRoutes[routeIndex];
+                enemy.DistanceToFinish = routeLengths[routeIndex];
+                enemy.ListNode = Controller.Instance.SpawnedEnemies.AddLast(enemy);
+                wave.waves[routeIndex].enemies[enemyIndex].SpawnCount--;
+                if (wave.waves[routeIndex].enemies[enemyIndex].SpawnCount <= 0)
+                {
+                    wave.waves[routeIndex].enemies.RemoveAt(enemyIndex);
+                    if (wave.waves[routeIndex].enemies.Count == 0) routesEnded++;
+                }
+            }
             nextSpawn += 1 / wave.spawnRate;
-            if (wave.enemies.Count == 0)
+            if (routesEnded == wave.waves.Length)
             {
                 allSpawned = true;
                 waveEnd = Time.time + wave.endDelay;
@@ -117,19 +102,58 @@ public class LevelSetup : MonoBehaviour
 
         if (allSpawned && ((Time.time >= waveEnd && !wave.waitForElimination) || Controller.Instance.SpawnedEnemies.Count == 0)) NextWave();
     }
+
+    private void InitializeWaves()
+    {
+        // Initialize all waves
+        foreach (var wave in enemyWaves)
+        {
+            // Initialize all routes
+            foreach (var routeWave in wave.waves)
+            {
+                // Calculate each type of enemies count
+                int enemiesToSpawn = routeWave.enemiesCount;
+                // Calculate overall ratio (needed to calculate each type of enemy count)
+                float overallRatio = 0;
+                foreach (var i in routeWave.enemies)
+                {
+                    overallRatio += i.spawnRatio;
+                }
+                // Calculate enemies' count
+                foreach (var i in routeWave.enemies)
+                {
+                    i.SpawnCount = Mathf.Min(Mathf.RoundToInt(routeWave.enemiesCount * i.spawnRatio / overallRatio), enemiesToSpawn);
+                    enemiesToSpawn -= i.SpawnCount;
+                }
+                // If calculated nuber of enemies less then overall number, randomly distribute remaining enemies
+                while (enemiesToSpawn > 0)
+                {
+                    routeWave.enemies[Random.Range(0, routeWave.enemies.Count)].SpawnCount++;
+                    enemiesToSpawn--;
+                }
+                // In case there are enemies with count == 0, remove them from the list
+                for (var i = 0; i < routeWave.enemies.Count; i++)
+                {
+                    if (routeWave.enemies[i].SpawnCount <= 0)
+                    {
+                        routeWave.enemies.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+    }
 }
 
 [System.Serializable]
 public class EnemyWave
 {
     /// <summary>
-    /// Overall enemies count
+    /// Count of waves should be equal to the count of routes in the level
     /// </summary>
-    public int enemiesCount;
-    /// <summary>
-    /// Configuration for enemies
-    /// </summary>
-    public List<EnemyConfig> enemies;
+    public RouteConfig[] waves;
+
+    // Common parameters
     /// <summary>
     /// How many enemies should spawn in a second
     /// </summary>
@@ -146,8 +170,19 @@ public class EnemyWave
     /// If set to true, wave will end if and only if all enemies are eliminated
     /// </summary>
     public bool waitForElimination;
+}
 
-    public bool Initialized { get; set; }
+[System.Serializable]
+public class RouteConfig
+{
+    /// <summary>
+    /// Overall enemies count
+    /// </summary>
+    public int enemiesCount;
+    /// <summary>
+    /// Configuration for enemies
+    /// </summary>
+    public List<EnemyConfig> enemies;
 }
 
 [System.Serializable]

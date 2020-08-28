@@ -93,9 +93,28 @@ public class Tower : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmosSelected()
+    protected void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, radius);
+    }
+
+    protected void FixedUpdate()
+    {
+        if (Controller.Instance.drawDebugLines)
+        {
+            if (target != null)
+            {
+                var holder = new GameObject("Pointer", typeof(LineRenderer));
+                var line = holder.GetComponent<LineRenderer>();
+                line.sortingOrder = 2;
+                line.positionCount = 2;
+                line.widthMultiplier = 0.03f;
+                line.SetPosition(0, transform.position);
+                line.SetPosition(1, target.transform.position);
+                Destroy(holder, Time.fixedDeltaTime);
+            }
+            circle.SetActive(true);
+        }
     }
 
 #endif

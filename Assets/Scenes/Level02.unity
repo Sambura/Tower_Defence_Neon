@@ -5103,22 +5103,22 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Positions:
-  - {x: -4.196661, y: 4.210334, z: 0}
-  - {x: -4.804859, y: 3.2643065, z: 0}
-  - {x: -5.0980673, y: 2.4741037, z: 0}
-  - {x: -4.9338593, y: 1.6688561, z: 0}
-  - {x: -4.478206, y: 0.98895, z: 0}
-  - {x: -3.3847313, y: 0.40561706, z: 0}
-  - {x: -2.2652318, y: 0.056023598, z: 0}
-  - {x: -0.91292536, y: -0.2372554, z: 0}
-  - {x: 0.21655038, y: -0.46930012, z: 0}
-  - {x: 0.31504828, y: -0.987449, z: 0}
-  - {x: -0.03809452, y: -1.4255948, z: 0}
-  - {x: -0.74334943, y: -1.7910521, z: 0}
-  - {x: -1.5092199, y: -2.256945, z: 0}
-  - {x: -2.1666908, y: -2.893179, z: 0}
-  - {x: -2.5348022, y: -3.526755, z: 0}
-  - {x: -2.7055871, y: -4.086451, z: 0}
+  - {x: -4.196661, y: 4.210334, z: 0.9}
+  - {x: -4.804859, y: 3.2643065, z: 0.9}
+  - {x: -5.0980673, y: 2.4741037, z: 0.9}
+  - {x: -4.9338593, y: 1.6688561, z: 0.9}
+  - {x: -4.478206, y: 0.98895, z: 0.9}
+  - {x: -3.3847313, y: 0.40561706, z: 0.9}
+  - {x: -2.2652318, y: 0.056023598, z: 0.9}
+  - {x: -0.91292536, y: -0.2372554, z: 0.9}
+  - {x: 0.21655038, y: -0.46930012, z: 0.9}
+  - {x: 0.31504828, y: -0.987449, z: 0.9}
+  - {x: -0.03809452, y: -1.4255948, z: 0.9}
+  - {x: -0.74334943, y: -1.7910521, z: 0.9}
+  - {x: -1.5092199, y: -2.256945, z: 0.9}
+  - {x: -2.1666908, y: -2.893179, z: 0.9}
+  - {x: -2.5348022, y: -3.526755, z: 0.9}
+  - {x: -2.7055871, y: -4.086451, z: 0.9}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1
@@ -5225,60 +5225,105 @@ MonoBehaviour:
   enemyRoutes:
   - {fileID: 1490985584}
   - {fileID: 1620373328}
-  initialMoney: 250
+  initialMoney: 400
   initialLifes: 5
   enemyWaves:
-  - enemiesCount: 10
-    enemies:
-    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
-        type: 3}
-      spawnRatio: 1
-    spawnRate: 0.3
+  - waves:
+    - enemiesCount: 35
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+          type: 3}
+        spawnRatio: 1
+    - enemiesCount: 0
+      enemies: []
+    spawnRate: 10
     startDelay: 0
     endDelay: 0
     waitForElimination: 1
-  - enemiesCount: 18
-    enemies:
-    - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
-        type: 3}
-      spawnRatio: 1
-    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
-        type: 3}
-      spawnRatio: 1
-    spawnRate: 0.6
+  - waves:
+    - enemiesCount: 0
+      enemies: []
+    - enemiesCount: 18
+      enemies:
+      - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+          type: 3}
+        spawnRatio: 1
+    spawnRate: 0.9
+    startDelay: 15
+    endDelay: 0
+    waitForElimination: 1
+  - waves:
+    - enemiesCount: 4
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
+        spawnRatio: 1
+    - enemiesCount: 4
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
+        spawnRatio: 1
+    spawnRate: 0.25
+    startDelay: 10
+    endDelay: 0
+    waitForElimination: 1
+  - waves:
+    - enemiesCount: 45
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+          type: 3}
+        spawnRatio: 1
+    - enemiesCount: 45
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+          type: 3}
+        spawnRatio: 1
+    spawnRate: 6
+    startDelay: 20
+    endDelay: 0
+    waitForElimination: 1
+  - waves:
+    - enemiesCount: 10
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
+        spawnRatio: 1
+    - enemiesCount: 15
+      enemies:
+      - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+          type: 3}
+        spawnRatio: 1
+    spawnRate: 0.5
+    startDelay: 10
+    endDelay: 0
+    waitForElimination: 1
+  - waves:
+    - enemiesCount: 6
+      enemies:
+      - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+          type: 3}
+        spawnRatio: 1
+    - enemiesCount: 6
+      enemies:
+      - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
+          type: 3}
+        spawnRatio: 1
+    spawnRate: 10
     startDelay: 10
     endDelay: 2
     waitForElimination: 0
-  - enemiesCount: 3
-    enemies:
-    - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
-        type: 3}
-      spawnRatio: 1
-    spawnRate: 0.8
-    startDelay: 0
-    endDelay: 0
-    waitForElimination: 1
-  - enemiesCount: 40
-    enemies:
-    - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
-        type: 3}
-      spawnRatio: 1
-    - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
-        type: 3}
-      spawnRatio: 3.5
-    - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
-        type: 3}
-      spawnRatio: 3.5
+  - waves:
+    - enemiesCount: 3
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
+        spawnRatio: 1
+    - enemiesCount: 3
+      enemies:
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
+        spawnRatio: 1
     spawnRate: 1
-    startDelay: 10
-    endDelay: 2
-    waitForElimination: 0
-  - enemiesCount: 5
-    enemies:
-    - enemyPrefab: {fileID: 5976164525222817708, guid: 90e56434568529840bb4c9e188510ec0,
-        type: 3}
-      spawnRatio: 1
-    spawnRate: 0.8
     startDelay: 0
     endDelay: 0
     waitForElimination: 1
@@ -5484,22 +5529,22 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Positions:
-  - {x: 5.0542316, y: 4.210334, z: 0}
-  - {x: 5.65655, y: 3.2643065, z: 0}
-  - {x: 6.153365, y: 2.4741037, z: 0}
-  - {x: 6.304828, y: 1.6306293, z: 0}
-  - {x: 5.4989963, y: 1.0399191, z: 0}
-  - {x: 4.7958107, y: 0.6986899, z: 0}
-  - {x: 3.9784846, y: 0.33635378, z: 0}
-  - {x: 2.9258993, y: -0.057481647, z: 0}
-  - {x: 1.8603874, y: -0.4986544, z: 0}
-  - {x: 1.0209044, y: -0.79836047, z: 0}
-  - {x: -0.03809452, y: -1.4255948, z: 0}
-  - {x: -0.74334943, y: -1.7910521, z: 0}
-  - {x: -1.5092199, y: -2.256945, z: 0}
-  - {x: -2.1666908, y: -2.893179, z: 0}
-  - {x: -2.5348022, y: -3.526755, z: 0}
-  - {x: -2.7055871, y: -4.086451, z: 0}
+  - {x: 5.0542316, y: 4.210334, z: 0.9}
+  - {x: 5.65655, y: 3.2643065, z: 0.9}
+  - {x: 6.153365, y: 2.4741037, z: 0.9}
+  - {x: 6.304828, y: 1.6306293, z: 0.9}
+  - {x: 5.4989963, y: 1.0399191, z: 0.9}
+  - {x: 4.7958107, y: 0.6986899, z: 0.9}
+  - {x: 3.9784846, y: 0.33635378, z: 0.9}
+  - {x: 2.9258993, y: -0.057481647, z: 0.9}
+  - {x: 1.8603874, y: -0.4986544, z: 0.9}
+  - {x: 1.0209044, y: -0.79836047, z: 0.9}
+  - {x: -0.03809452, y: -1.4255948, z: 0.9}
+  - {x: -0.74334943, y: -1.7910521, z: 0.9}
+  - {x: -1.5092199, y: -2.256945, z: 0.9}
+  - {x: -2.1666908, y: -2.893179, z: 0.9}
+  - {x: -2.5348022, y: -3.526755, z: 0.9}
+  - {x: -2.7055871, y: -4.086451, z: 0.9}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.1

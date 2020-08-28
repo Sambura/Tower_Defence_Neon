@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class TowerBuildController : MonoBehaviour
+public class TowerManager : MonoBehaviour
 {
     [SerializeField] private GameObject menuObject;
     [SerializeField] private float yOffset;
@@ -57,7 +57,7 @@ public class TowerBuildController : MonoBehaviour
     }
 
 	#region singleton
-	public static TowerBuildController Instance;
+	public static TowerManager Instance;
     private void Awake()
     {
         if (Instance == null)
@@ -98,7 +98,7 @@ public class TowerBuildController : MonoBehaviour
 
     public void RemoveTower()
     {
-        Controller.Instance.Money += Tower.SelectedTower.removeCost;
+        Controller.Instance.Money += (int)(Tower.SelectedTower.removeCost * Controller.Instance.CurrentRemoveRatio);
         Instantiate(removeEffect, Tower.SelectedTower.transform.position, Quaternion.identity)
             .GetComponent<EffectController>().SetParticleMaterial(Tower.SelectedTower.particleMaterial);
         Destroy(Tower.SelectedTower.gameObject);

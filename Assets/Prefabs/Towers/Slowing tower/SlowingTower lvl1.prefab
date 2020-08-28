@@ -130,8 +130,8 @@ MonoBehaviour:
   radius: 3
   damage: 0
   fireRate: 0
-  cost: 200
-  buildTime: 2.5
+  cost: 50
+  buildTime: 1
   buildBarOffset: {x: 0, y: -0.5, z: 0}
   particleMaterial: {fileID: 2100000, guid: f3747a4e3a676b04da51d3e45030a293, type: 2}
   removeCost: 0

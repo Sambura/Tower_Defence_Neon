@@ -128,18 +128,18 @@ MonoBehaviour:
     type: 3}
   upgrade: {fileID: 1240431536469242377, guid: 9b20b1a24c5a10a49aab33666bfe36be, type: 3}
   radius: 2
-  damage: 180
-  fireRate: 0.3
+  damage: 160
+  fireRate: 0.33
   cost: 400
-  buildTime: 0.5
+  buildTime: 1
   buildBarOffset: {x: 0, y: -0.5, z: 0}
   particleMaterial: {fileID: 2100000, guid: ab1cd907eac377e48a826a0a14eef4c2, type: 2}
   removeCost: 0
   projectilePrefab: {fileID: 5506810053946469137, guid: 0e72b6563d0bda846b028e2ce884f42a,
     type: 3}
-  projectileVelocity: 7.5
-  damageRadius: 1
-  damageDecay: 0.2
+  projectileVelocity: 4
+  damageRadius: 0.7
+  damageDecay: 0.25
 --- !u!1 &4979671540579378496
 GameObject:
   m_ObjectHideFlags: 0

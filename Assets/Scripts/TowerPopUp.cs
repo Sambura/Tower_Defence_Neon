@@ -26,8 +26,8 @@ public class TowerPopUp : MonoBehaviour
     {
         isOpened = true;
         menuObject.transform.position = position + new Vector2(0, yOffset * (position.y > 0 ? -1 : 1));
-        var point = TowerBuildController.Instance.SelectedPoint;
-        TowerBuildController.Instance.SelectedPoint = null;
+        var point = TowerManager.Instance.SelectedPoint;
+        TowerManager.Instance.SelectedPoint = null;
         if (point != null) point.SetHighlight(false);
 
         upgradeCostNow = upgradeCost;

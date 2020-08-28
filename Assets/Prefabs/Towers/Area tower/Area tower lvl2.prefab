@@ -127,19 +127,19 @@ MonoBehaviour:
   circlePrefab: {fileID: 9044926532029320617, guid: 6502cf0ec2d7f6d44b4d9b638cdb182a,
     type: 3}
   upgrade: {fileID: 1240431536469242377, guid: acaf3c111dd62a542a6aebebb6b86036, type: 3}
-  radius: 2.25
-  damage: 240
-  fireRate: 0.3
+  radius: 2
+  damage: 220
+  fireRate: 0.42
   cost: 600
-  buildTime: 8
+  buildTime: 6
   buildBarOffset: {x: 0, y: -0.5, z: 0}
   particleMaterial: {fileID: 2100000, guid: ab1cd907eac377e48a826a0a14eef4c2, type: 2}
   removeCost: 0
   projectilePrefab: {fileID: 5506810053946469137, guid: 0e72b6563d0bda846b028e2ce884f42a,
     type: 3}
-  projectileVelocity: 7.5
-  damageRadius: 1
-  damageDecay: 0.2
+  projectileVelocity: 4
+  damageRadius: 0.75
+  damageDecay: 0.25
 --- !u!1 &4979671540579378496
 GameObject:
   m_ObjectHideFlags: 0

@@ -1000,17 +1000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45fe3445885118c438fb8aaad13a5e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab:
-  - {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7, type: 3}
-  - {fileID: 9197484327864900182, guid: d319f5ab45c61004db3b08ace1d58c85, type: 3}
-  - {fileID: 5976164525222817708, guid: 90e56434568529840bb4c9e188510ec0, type: 3}
-  - {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3, type: 3}
-  - {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48, type: 3}
   healthBarPrefab: {fileID: 8658442463025720528, guid: 0c1d8197d945bd544ac061d98abedd7f,
-    type: 3}
-  towerPreviewPrefab: {fileID: 8703444762497053345, guid: d3103f639c324594bb30ec62cad218d4,
-    type: 3}
-  circlePrefab: {fileID: 9044926532029320617, guid: 6502cf0ec2d7f6d44b4d9b638cdb182a,
     type: 3}
   heartSprites:
   - {fileID: 21300000, guid: 2b67b3495886d0f41b0fa3013524334f, type: 3}
@@ -1026,8 +1016,8 @@ MonoBehaviour:
   popupTowerMenu: {fileID: 1155893712}
   mainCamera: {fileID: 519420031}
   removeCostRatio: 0.4
-  levelSceneIndex: 2
-  preview: {fileID: 0}
+  levelSceneIndex: 1
+  drawDebugLines: 1
 --- !u!1 &440076755
 GameObject:
   m_ObjectHideFlags: 0
@@ -4372,7 +4362,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -183}
+  m_AnchoredPosition: {x: 0, y: -175.39}
   m_SizeDelta: {x: 700, y: 141.17322}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1418786461

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 7529938291661283743}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -94,9 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db6036b8bef31344b5e4b6436c804ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 0.5
-  maxHealth: 400
-  rotationTime: 0.7
+  velocity: 1.3
+  maxHealth: 350
+  rotationTime: 0.3
   healthBarOffset: {x: 0, y: -0.4, z: 0}
   cost: 25
   destructionEffect: {fileID: 3549251252915314664, guid: d6cb0fd15047dda4eb283467d974e278,

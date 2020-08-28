@@ -46,6 +46,8 @@ public class Controller : MonoBehaviour
         }
     }
 
+    public bool drawDebugLines;
+
     public float CurrentRemoveRatio { get; set; } = 1;
 
     /// <summary>
@@ -56,11 +58,6 @@ public class Controller : MonoBehaviour
     /// Singleton
     /// </summary>
     public static Controller Instance { get; set; }
-    /// <summary>
-    /// Index of tower that is being build now. -1 if no towers are being build
-    /// </summary>
-    public int IsBuilding { get; set; } = -1;
-    public TowerPreview preview;
 
     private LevelSetup levelSetup;
 
@@ -128,7 +125,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < towers.Length; i++)
         {
             Tower.SelectedTower = towers[i];
-            TowerBuildController.Instance.RemoveTower();
+            TowerManager.Instance.RemoveTower();
             yield return new WaitForSeconds(0.3f);
         }
         levelCompleteScreen.SetActive(true);
@@ -138,7 +135,6 @@ public class Controller : MonoBehaviour
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(0, LoadSceneMode.Single);
-        Destroy(this);
     }
 
     public void SetTimeScale(float value)
@@ -167,6 +163,7 @@ public class Controller : MonoBehaviour
     private IEnumerator GameOver()
     {
         bool animationPlayed = false;
+        skipDelayButton.Close();
         for (float scale = 1; scale > 0.01f; scale -= 0.02f)
         {
             Time.timeScale = scale;
