@@ -5298,33 +5298,30 @@ MonoBehaviour:
     endDelay: 0
     waitForElimination: 1
   - waves:
-    - enemiesCount: 6
+    - enemiesCount: 40
       enemies:
       - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
           type: 3}
+        spawnRatio: 2
+      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+          type: 3}
         spawnRatio: 1
-    - enemiesCount: 6
+      - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
+          type: 3}
+        spawnRatio: 7
+    - enemiesCount: 40
       enemies:
       - enemyPrefab: {fileID: 7529938291661283743, guid: ce2db71eeb8eba94e9ad9b28bba92a48,
           type: 3}
-        spawnRatio: 1
-    spawnRate: 10
-    startDelay: 10
-    endDelay: 2
-    waitForElimination: 0
-  - waves:
-    - enemiesCount: 3
-      enemies:
+        spawnRatio: 2
       - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
           type: 3}
         spawnRatio: 1
-    - enemiesCount: 3
-      enemies:
-      - enemyPrefab: {fileID: 8623760887041905154, guid: 59b8565870b1264408dfd002ec80a1b7,
+      - enemyPrefab: {fileID: 8623760887041905154, guid: f7fe7b3d0c06ef14cb913d30d67492e3,
           type: 3}
-        spawnRatio: 1
+        spawnRatio: 7
     spawnRate: 1
-    startDelay: 0
+    startDelay: 10
     endDelay: 0
     waitForElimination: 1
 --- !u!4 &1567913373 stripped

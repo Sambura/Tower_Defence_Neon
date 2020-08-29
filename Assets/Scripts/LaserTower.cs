@@ -54,7 +54,7 @@ public class LaserTower : Tower
 
     public override void PrepareForUpgrade()
     {
-        circle.SetActive(false);
+        Circle.SetActive(false);
         enabled = false;
         GetComponent<Collider2D>().enabled = false;
         animator.SetTrigger("Stop");

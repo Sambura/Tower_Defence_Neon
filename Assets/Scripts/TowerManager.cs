@@ -11,6 +11,7 @@ public class TowerManager : MonoBehaviour
     [SerializeField] private GameObject upgradeEffect;
     [SerializeField] private GameObject removeEffect;
     [SerializeField] private int screenWidth = 1920;
+    [SerializeField] private GameObject circlePrefab;
 
     private TowerPoint _selectedPoint;
 
@@ -152,7 +153,9 @@ public class TowerManager : MonoBehaviour
         }
 
         var tower = Instantiate(newTower, point.transform.position, Quaternion.identity);
-        tower.GetComponent<Tower>().buildPoint = point;
+        var newTowerScript = tower.GetComponent<Tower>();
+        newTowerScript.buildPoint = point;
+        newTowerScript.Circle = Instantiate(circlePrefab, tower.transform);
         Destroy(progressBar.gameObject);
     }
 
@@ -189,6 +192,7 @@ public class TowerManager : MonoBehaviour
         var newTowerScript = tower.GetComponent<Tower>();
         newTowerScript.buildPoint = point;
         newTowerScript.removeCost += removeCost;
+        newTowerScript.Circle = Instantiate(circlePrefab, tower.transform);
         Destroy(oldTower);
 
         Destroy(progressBar.gameObject);

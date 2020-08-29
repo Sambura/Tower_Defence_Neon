@@ -7,14 +7,15 @@ public class TimedButton : MonoBehaviour
 {
     [SerializeField] private Image image;
     [SerializeField] private Animator animator;
+    [SerializeField] private bool awakeState;
 
     private float startTime;
     private float duration;
-    private bool enableUpdate;
+    private bool enableUpdate = false;
 
     private void Awake()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(awakeState);
     }
 
     public void Show(float duration)

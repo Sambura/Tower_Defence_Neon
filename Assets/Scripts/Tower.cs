@@ -10,7 +10,6 @@ public class Tower : MonoBehaviour
     /// </summary>
     [HideInInspector] public TowerPoint buildPoint;
     public GameObject gun;
-    public GameObject circlePrefab;
     public GameObject upgrade;
     public float radius = 2;
     public float damage = 25;
@@ -52,26 +51,25 @@ public class Tower : MonoBehaviour
     }
 
     protected Enemy target;
-    protected GameObject circle;
+    public GameObject Circle { get; set; }
     protected float nextShot;
 
     protected virtual void Start()
     {
-        circle = Instantiate(circlePrefab, transform);
-        circle.GetComponent<CircleDrawer>().Radius = radius;
-        circle.SetActive(false);
+        Circle.GetComponent<CircleDrawer>().Radius = radius;
+        Circle.SetActive(false);
         removeCost += cost;
     }
 
     protected virtual void OnMouseEnter()
     {
-        circle.SetActive(true);
+        Circle.SetActive(true);
     }
 
     protected virtual void OnMouseExit()
     {
         if (SelectedTower != this)
-            circle.SetActive(false);
+            Circle.SetActive(false);
     }
 
     protected virtual void OnMouseUpAsButton()
@@ -81,13 +79,13 @@ public class Tower : MonoBehaviour
 
     public virtual void Deselect()
     {
-        circle.SetActive(false);
+        Circle.SetActive(false);
         PopUpMenu = false;
     }
 
     public virtual void PrepareForUpgrade()
     {
-        circle.SetActive(false);
+        Circle.SetActive(false);
         Destroy(this);
     }
 
@@ -113,7 +111,7 @@ public class Tower : MonoBehaviour
                 line.SetPosition(1, target.transform.position);
                 Destroy(holder, Time.fixedDeltaTime);
             }
-            circle.SetActive(true);
+            Circle.SetActive(true);
         }
     }
 
