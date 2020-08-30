@@ -47,12 +47,18 @@ public class Tower : MonoBehaviour
                 Controller.Instance.popupTowerMenu.ClosePopUp();
                 SelectedTower = null;
             }
+            PopUpSet();
         }
     }
 
     protected Enemy target;
     public GameObject Circle { get; set; }
     protected float nextShot;
+
+    protected virtual void PopUpSet()
+    {
+
+    }
 
     protected virtual void Start()
     {
@@ -91,12 +97,12 @@ public class Tower : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    protected void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
-    protected void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (Controller.Instance.drawDebugLines)
         {

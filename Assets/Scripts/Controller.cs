@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,9 +12,10 @@ public class Controller : MonoBehaviour
     [SerializeField] private Sprite[] heartSprites;
 
     [Header("Scene elements")]
-    [SerializeField] private Canvas worldCanvas;
+    [SerializeField] public Canvas worldCanvas;
     [SerializeField] private TMPro.TextMeshProUGUI lifesText;
     [SerializeField] private TMPro.TextMeshProUGUI moneyText;
+    [SerializeField] private TMPro.TextMeshProUGUI wavesText;
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject levelCompleteScreen;
     [SerializeField] private TimedButton skipDelayButton;
@@ -24,6 +26,8 @@ public class Controller : MonoBehaviour
     public Camera mainCamera;
     public float removeCostRatio = 0.4f;
     public int levelSceneIndex = 1;
+    public int additionalMoney;
+    public int additionalLifes;
 
     private int lifesCount;
 
@@ -97,6 +101,10 @@ public class Controller : MonoBehaviour
         levelSetup = GameObject.FindGameObjectWithTag("LevelData").GetComponent<LevelSetup>(); // Get level setup
         Money = levelSetup.initialMoney; // Set money
         lifesCount = levelSetup.initialLifes; // Set lifes
+#if UNITY_EDITOR
+        Money += additionalMoney;
+        lifesCount += additionalLifes;
+#endif
         lifesText.text = lifesCount.ToString(); // Display lifes text
         moneyText.text = Money.ToString(); // Display money
     }

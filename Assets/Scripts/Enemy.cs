@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     /// Represents how close enemy to the route's end [0..positiveInfinity]
     /// </summary>
     public float DistanceToFinish { get; set; }
+    public Vector2 LastPosition { get; set; }
 
     /// <summary>
     /// Node index in route to which unit is moving now
@@ -26,7 +27,6 @@ public class Enemy : MonoBehaviour
     private int nextNodeIndex = 1;
     private HealthBar healthBar;
     private float health;
-
     private List<Effect> velocityChange = new List<Effect>();
     private Vector2 routeOffset;
 
@@ -55,16 +55,20 @@ public class Enemy : MonoBehaviour
             - Vector2.Distance(transform.position, Route.GetPosition(nextNodeIndex));
         var direction = Route.GetPosition(nextNodeIndex) + (Vector3)routeOffset - transform.position;
         transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg);
+        LastPosition = transform.position;
     }
 
     void Update()
     {
         if (nextNodeIndex == Route.positionCount) return;
+        LastPosition = transform.position;
         // Inflicting vlocity effects
-        float velocityFactor = 1;
+        float maxVelocityFactor = 1;
+        float minVelocityFactor = 1;
         for (var i = 0; i < velocityChange.Count; i++)
         {
-            velocityFactor *= velocityChange[i].factor;
+            maxVelocityFactor = Mathf.Max(maxVelocityFactor, velocityChange[i].factor);
+            minVelocityFactor = Mathf.Min(minVelocityFactor, velocityChange[i].factor);
             if (velocityChange[i].endTime <= Time.time)
             {
                 velocityChange.RemoveAt(i);
@@ -72,7 +76,7 @@ public class Enemy : MonoBehaviour
             }
         }
         // Calculating new position
-        float deltaDistance = velocity * Time.deltaTime * velocityFactor;
+        float deltaDistance = velocity * Time.deltaTime * maxVelocityFactor * minVelocityFactor;
         DistanceToFinish -= deltaDistance;
         if (DistanceToFinish < 0) DistanceToFinish = 0; // In theory this value can run significantly less then zero due to route offset
         while (deltaDistance > 0)
@@ -134,6 +138,25 @@ public class Enemy : MonoBehaviour
                     ListNode.List.Remove(ListNode);
         }
     }
+
+#if UNITY_EDITOR
+
+    private void FixedUpdate()
+    {
+        if (Controller.Instance.drawDebugLines)
+        {
+            var holder = new GameObject("Enemy", typeof(LineRenderer));
+            var line = holder.GetComponent<LineRenderer>();
+            line.sortingOrder = 5;
+            line.positionCount = 2;
+            line.widthMultiplier = 0.001f;
+            line.SetPosition(0, transform.position);
+            line.SetPosition(1, LastPosition);
+            Destroy(holder, Time.fixedDeltaTime);
+        }
+    }
+
+#endif
 }
 
 public class Effect

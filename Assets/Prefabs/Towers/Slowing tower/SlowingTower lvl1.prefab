@@ -124,8 +124,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildPoint: {fileID: 0}
   gun: {fileID: 7692250971338430432}
-  circlePrefab: {fileID: 9044926532029320617, guid: 6502cf0ec2d7f6d44b4d9b638cdb182a,
-    type: 3}
   upgrade: {fileID: 955793005024254078, guid: c798864d6d78a3f40b141297994e81e1, type: 3}
   radius: 3
   damage: 0
@@ -135,7 +133,7 @@ MonoBehaviour:
   buildBarOffset: {x: 0, y: -0.5, z: 0}
   particleMaterial: {fileID: 2100000, guid: f3747a4e3a676b04da51d3e45030a293, type: 2}
   removeCost: 0
-  slowingFactor: 0.9
+  slowingFactor: 0.7
   effectTime: 0
 --- !u!1 &7692250971338430432
 GameObject:
