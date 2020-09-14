@@ -206,7 +206,7 @@ MonoBehaviour:
   buildPoint: {fileID: 0}
   gun: {fileID: 3806749818183775984}
   upgrade: {fileID: 6987888711929930169, guid: f0db7d2c1f332d44b8b9071fedbbc475, type: 3}
-  radius: 4
+  radius: 6
   damage: 30
   fireRate: 0
   cost: 100

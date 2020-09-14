@@ -133,6 +133,7 @@ public class TowerManager : MonoBehaviour
         // Tower stuff
         var towerScript = newTower.GetComponent<Tower>();
         var buildTime = towerScript.buildTime;
+        if (!Controller.Instance.GameStarted) buildTime = 1;
         var progressBarOffset = towerScript.buildBarOffset;
         // Effect stuff
         var effect = Instantiate(buildEffect, point.transform.position, Quaternion.identity).GetComponent<EffectController>();
@@ -164,6 +165,7 @@ public class TowerManager : MonoBehaviour
         // Tower stuff
         var upgradeScript = newTower.GetComponent<Tower>();
         var buildTime = upgradeScript.buildTime;
+        if (!Controller.Instance.GameStarted) buildTime = 1;
         var progressBarOffset = upgradeScript.buildBarOffset;
         var oldTowerScript = oldTower.GetComponent<Tower>();
         var point = oldTowerScript.buildPoint;

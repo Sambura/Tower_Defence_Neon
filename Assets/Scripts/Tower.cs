@@ -53,7 +53,7 @@ public class Tower : MonoBehaviour
 
     protected Enemy target;
     public GameObject Circle { get; set; }
-    protected float nextShot;
+    protected float nextShot = 0;
 
     protected virtual void PopUpSet()
     {
@@ -70,12 +70,16 @@ public class Tower : MonoBehaviour
     protected virtual void OnMouseEnter()
     {
         Circle.SetActive(true);
+        GetComponent<SpriteRenderer>().color = new Color(0.9f, 0.9f, 0.9f);
     }
 
     protected virtual void OnMouseExit()
     {
         if (SelectedTower != this)
+        {
             Circle.SetActive(false);
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
     }
 
     protected virtual void OnMouseUpAsButton()
@@ -87,6 +91,7 @@ public class Tower : MonoBehaviour
     {
         Circle.SetActive(false);
         PopUpMenu = false;
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     public virtual void PrepareForUpgrade()

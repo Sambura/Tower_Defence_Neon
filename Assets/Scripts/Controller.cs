@@ -31,6 +31,7 @@ public class Controller : MonoBehaviour
 
     private int lifesCount;
 
+    public bool GameStarted { get; set; } = false;
     public event System.Action<int> OnMoneyChanged;
     private int _money;
     private bool smoothMoneyDisplayInRun;
@@ -113,6 +114,7 @@ public class Controller : MonoBehaviour
     {
         CurrentRemoveRatio = removeCostRatio;
         levelSetup.NextWave();
+        GameStarted = true;
     }
 
     public void SkipDelay()

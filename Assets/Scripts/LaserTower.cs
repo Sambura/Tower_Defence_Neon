@@ -7,24 +7,29 @@ public class LaserTower : Tower
     public Animator animator;
     public GameObject[] lasers;
 
+    public int IsFiring { get; set; } 
+
     protected void Update()
     {
-        if (target != null)
+        if (IsFiring == 0)
         {
-            if (Vector2.Distance(target.transform.position, transform.position) > radius)
-                target = null;
-        }
-        if (target == null)
-        {
-            float lastDistance = 0;
-            foreach (var i in Controller.Instance.SpawnedEnemies)
+            if (target != null)
             {
-                if (Vector2.Distance(transform.position, i.transform.position) <= radius)
+                if (Vector2.Distance(target.transform.position, transform.position) > radius)
+                    target = null;
+            }
+            if (target == null)
+            {
+                float lastDistance = 0;
+                foreach (var i in Controller.Instance.SpawnedEnemies)
                 {
-                    if (target == null || lastDistance > i.DistanceToFinish)
+                    if (Vector2.Distance(transform.position, i.transform.position) <= radius)
                     {
-                        target = i;
-                        lastDistance = i.DistanceToFinish;
+                        if (target == null || lastDistance > i.DistanceToFinish)
+                        {
+                            target = i;
+                            lastDistance = i.DistanceToFinish;
+                        }
                     }
                 }
             }
@@ -41,12 +46,13 @@ public class LaserTower : Tower
             if (nextShot <= Time.time)
             {
                 animator.SetTrigger("Fire");
+                IsFiring = 1;
                 nextShot = Time.time + 1 / fireRate;
             }
         }
     }
 
-    public void FireBullet()
+    public void InflictDamage()
     {
         if (target == null) return;
         target.TakeDamage(damage);

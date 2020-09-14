@@ -40,6 +40,23 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void RemoveEffect(GameObject source, Effect.EffectType effectType)
+    {
+        switch (effectType)
+        {
+            case Effect.EffectType.VelocityChange:
+                for (int i = 0; i < velocityChange.Count; i++)
+                {
+                    if (velocityChange[i].source == source)
+                    {
+                        velocityChange.RemoveAt(i);
+                        i--;
+                    }
+                }
+                break;
+        }
+    }
+
     private void Start()
     {
         health = maxHealth;
@@ -67,10 +84,11 @@ public class Enemy : MonoBehaviour
         float minVelocityFactor = 1;
         for (var i = 0; i < velocityChange.Count; i++)
         {
-            maxVelocityFactor = Mathf.Max(maxVelocityFactor, velocityChange[i].factor);
-            minVelocityFactor = Mathf.Min(minVelocityFactor, velocityChange[i].factor);
-            if (velocityChange[i].endTime <= Time.time)
+            maxVelocityFactor = Mathf.Max(maxVelocityFactor, velocityChange[i].value);
+            minVelocityFactor = Mathf.Min(minVelocityFactor, velocityChange[i].value);
+            if (velocityChange[i].CheckExpiration())
             {
+                velocityChange[i].Destroy();
                 velocityChange.RemoveAt(i);
                 i--;
             }
@@ -81,7 +99,8 @@ public class Enemy : MonoBehaviour
         if (DistanceToFinish < 0) DistanceToFinish = 0; // In theory this value can run significantly less then zero due to route offset
         while (deltaDistance > 0)
         {
-            Vector2 destination = (Vector2)Route.GetPosition(nextNodeIndex) + (nextNodeIndex == Route.positionCount - 1 ? Vector2.zero : routeOffset);
+            Vector2 destination = (Vector2)Route.GetPosition(nextNodeIndex) + routeOffset;
+             //   + (nextNodeIndex == Route.positionCount - 1 ? Vector2.zero : routeOffset);
             float distance = Vector2.Distance(transform.position, destination);
             if (deltaDistance < distance)
             {
@@ -164,13 +183,49 @@ public class Effect
     public enum EffectType { VelocityChange };
 
     public EffectType effectType;
-    public float factor;
+    /// <summary>
+    /// For velocity change it is number by which unit's velocity being multiplied, e.g. value = 2 means unit will move two times faster
+    /// </summary>
+    public float value;
+    /// <summary>
+    /// Point in time when effect is expired. -1 if it should not be controlled by unit itself (effect should be removed by some other object)
+    /// </summary>
     public float endTime;
+    /// <summary>
+    /// GameObject that inflicted this effect
+    /// </summary>
+    public GameObject source;
+    /// <summary>
+    /// Gameobjects with visual of this effect. Usually it is particles
+    /// </summary>
+    public GameObject fx;
 
-    public Effect(EffectType effectType, float factor, float endTime)
+    public bool CheckExpiration()
+    {
+        if (endTime == -1) return false;
+        return Time.time >= endTime;
+    }
+
+    public void Destroy()
+    {
+        if (fx != null)
+        {
+            var particleSystem = fx.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+            {
+                particleSystem.Stop();
+                Object.Destroy(fx, particleSystem.main.startLifetime.constantMax);
+            }
+            else Object.Destroy(fx);
+        }
+    }
+
+    public Effect(EffectType effectType, float value, float endTime, GameObject source, GameObject fx = null)
     {
         this.effectType = effectType;
-        this.factor = factor;
+        this.value = value;
         this.endTime = endTime;
+        this.source = source;
+        this.fx = fx;
     }
 }

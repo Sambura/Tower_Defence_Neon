@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class TowerPopUp : MonoBehaviour
 {
-    [SerializeField] private GameObject menuObject;
     [SerializeField] private Button removeButton;
     [SerializeField] private Button infoButton;
     [SerializeField] private Button upgradeButton;
@@ -25,7 +24,7 @@ public class TowerPopUp : MonoBehaviour
     public void ShowPopUp(Vector2 position, int upgradeCost, int removeCost)
     {
         isOpened = true;
-        menuObject.transform.position = position + new Vector2(0, yOffset * (position.y > 0 ? -1 : 1));
+        transform.position = position + new Vector2(0, yOffset * (position.y > 0 ? -1 : 1));
         var point = TowerManager.Instance.SelectedPoint;
         TowerManager.Instance.SelectedPoint = null;
         if (point != null) point.SetHighlight(false);
@@ -53,7 +52,7 @@ public class TowerPopUp : MonoBehaviour
             removeButton.interactable = true;
         }
 
-        menuObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     private void OnMoneyChanged(int money)
@@ -65,6 +64,6 @@ public class TowerPopUp : MonoBehaviour
     public void ClosePopUp()
     {
         isOpened = false;
-        menuObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

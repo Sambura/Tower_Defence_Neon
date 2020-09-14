@@ -5,22 +5,46 @@ using UnityEngine;
 public class SlowingTower : Tower
 {
     [SerializeField] private float slowingFactor;
-    [SerializeField] private float effectTime;
+    [SerializeField] private GameObject slowingEffectPrefab;
+
+    private ParticleSystem gunParticles;
+    private List<Enemy> slowedEnemies = new List<Enemy>();
+
+    protected override void Start()
+    {
+        base.Start();
+        gunParticles = gun.GetComponent<ParticleSystem>();
+    }
 
     void Update()
     {
-        foreach (var i in Controller.Instance.SpawnedEnemies)
+        if (Time.time >= nextShot)
         {
-            if (Vector2.Distance(transform.position, i.transform.position) <= radius)
+            bool flag = false;
+            foreach (var i in Controller.Instance.SpawnedEnemies)
             {
-                i.InflictEffect(new Effect(Effect.EffectType.VelocityChange, slowingFactor, effectTime + Time.time));
+                if (Vector2.Distance(transform.position, i.transform.position) <= radius)
+                {
+                    flag = true;
+                    if (slowedEnemies.Contains(i)) continue;
+                    var fx = Instantiate(slowingEffectPrefab, i.transform);
+                    i.InflictEffect(new Effect(Effect.EffectType.VelocityChange, slowingFactor, -1, gameObject, fx));
+                    slowedEnemies.Add(i);
+                } else if (slowedEnemies.Contains(i))
+                {
+                    i.RemoveEffect(gameObject, Effect.EffectType.VelocityChange);
+                    slowedEnemies.Remove(i);
+                }
             }
+            if (flag && !gunParticles.isPlaying) gunParticles.Play(); 
+            if (!flag && gunParticles.isPlaying) gunParticles.Stop();
+            nextShot = Time.time + 1 / fireRate;
         }
     }
 
     public override void PrepareForUpgrade()
     {
-        gun.GetComponent<ParticleSystem>().Stop();
+        gunParticles.Stop();
         Circle.SetActive(false);
         Destroy(this);
     }

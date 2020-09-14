@@ -40,4 +40,9 @@ public class TowerBuildButton : MonoBehaviour
             canvasGroup.alpha = inactiveAlpha;
         }
     }
+
+    private void OnMouseEnter()
+    {
+        Debug.Log("Hover detected");
+    }
 }
